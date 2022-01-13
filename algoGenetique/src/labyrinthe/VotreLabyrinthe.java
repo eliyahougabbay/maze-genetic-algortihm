@@ -39,20 +39,16 @@ public class VotreLabyrinthe implements Labyrinthe {
             for (int j = 0; j < nc; j++) {
                 // each case sum is 15 = (North) 1 + (Est) 2 + (South) 4 + (West) 8
                 labyrinthe[i][j] = 15;
-                //
+                // 
                 chemin[i][j] = 0;
             }
         }
 
     }
 
-    /**
-     * * CETTE FONCTION ME PERMET D'AFFICHER LES VALEURS DANS LE labyrinthe PUIS DE
-     * chemin (NOTRE METHODE)
-     */
 
     /**
-     * Print each labyrinthe case value
+     * Print each labyrinthe square value & path value 
      */
     public void afficherLab() {
         for (int i = 0; i < labyrinthe.length; i++) {
@@ -69,6 +65,7 @@ public class VotreLabyrinthe implements Labyrinthe {
             System.out.println();
         }
     }
+
 
     /**
      * Check on which square coordinates the path may continue
@@ -107,11 +104,12 @@ public class VotreLabyrinthe implements Labyrinthe {
         return CoordonnesPossibles;
     }
 
+
     // METHODE PRENDRE LA VOISINE ET CASSER LES MURS
     /**
      * Each
      * 
-     * @param Tab
+     * @param Tab ?
      * @return
      */
     public int[] PrendreLaVoisine(int[][] Tab) {
@@ -128,8 +126,8 @@ public class VotreLabyrinthe implements Labyrinthe {
         // Futur possibles coordonnées où nous nous placerons
         int[] Coord = { Tab[x][0], Tab[x][1] };
 
-        // indice respectif de la case Nord,Est,Sud,Ouest
-        int k = Tab.length - 2;
+        // indice respectif de la case Nord, Est, Sud, Ouest
+        int k = Tab.length - 2; // 2 ? current index and ?
 
         // on selectionne les cases qui sont nouvelles que l'on peut visiter
         while (k > -1) {
@@ -149,6 +147,7 @@ public class VotreLabyrinthe implements Labyrinthe {
             Coord[1] = Tab[4][1];
             return (Coord);
         }
+        
 
         if (TabPuce.get(l) == 0) { // Si la case Nord fut choisie
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 1;
@@ -157,7 +156,7 @@ public class VotreLabyrinthe implements Labyrinthe {
             // On casse le mur de la voisine
             Coord[0] = Tab[4][0] - 1;
             Coord[1] = Tab[4][1];
-            // System.out.println("\n"+"Les coordonnées sont : "+Coord[0]+" "+Coord[1]);
+
             return (Coord);
         }
 
@@ -168,9 +167,9 @@ public class VotreLabyrinthe implements Labyrinthe {
             // On casse le mur de la voisine
             Coord[0] = Tab[4][0];
             Coord[1] = Tab[4][1] + 1;
-            // System.out.println("\n"+"Les coordonnées sont : "+Coord[0]+" "+Coord[1]);
             return (Coord);
         }
+
         if (TabPuce.get(l) == 2) { // Si la case Sud fut choisie
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 4;
             // On casse notre mur
@@ -181,6 +180,7 @@ public class VotreLabyrinthe implements Labyrinthe {
             // System.out.println("\n"+"Les coordonnées sont : "+Coord[0]+" "+Coord[1]);
             return (Coord);
         }
+
         if (TabPuce.get(l) == 3) {// Si la case Ouest fut choisie
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 8;
             // On casse notre mur
@@ -196,13 +196,14 @@ public class VotreLabyrinthe implements Labyrinthe {
     }
     // CHERCHE LIGNE CASE DE DEBUT ET CASE DE FIN
 
+    /**
+     * Generate start and end row coordinates 
+     * 
+     * @return vector of start and end coordinates 
+     */
     public int[] ChercheES() {
-        int L1 = (int) (Math.random() * nbLigne);
-        int L2 = (int) (Math.random() * nbLigne);
-        int[] Coordonnées = new int[2];
-        Coordonnées[0] = L1;
-        Coordonnées[1] = L2;
-        return Coordonnées;
+        int[] coordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
+        return coordinates;
     }
 
     // CHOIX AlÉTOIRE DE LA CASE VOISINE QUE L'ON CHOISIRA SI AUCUNE CASE N'EST
