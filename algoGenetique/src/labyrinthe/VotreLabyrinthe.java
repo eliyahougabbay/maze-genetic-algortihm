@@ -68,7 +68,7 @@ public class VotreLabyrinthe implements Labyrinthe {
 
 
     /**
-     * Find which neighbor square coordinates where the path may continue
+     * Find all neighbors square coordinates where the path may continue
      * 
      * @param ligne   the row square coordinates where the path stopped
      * @param colonne the column square coordinates where the path stopped
@@ -76,15 +76,16 @@ public class VotreLabyrinthe implements Labyrinthe {
      */
     public int[][] ChercheLesVoisines(int ligne, int colonne) {
 
-        // Maze squares coordinates where the chemin may continue
         int[][] CoordonnesPossibles = new int[5][2];
-        int[][] Coordonnees = { { ligne - 1, colonne },
-                { ligne, colonne + 1 },
-                { ligne + 1, colonne },
-                { ligne, colonne - 1 } };
+        int[][] Coordonnees = { 
+                                { ligne - 1, colonne },
+                                { ligne, colonne + 1 },
+                                { ligne + 1, colonne },
+                                { ligne, colonne - 1 }
+                            };
 
         // Check for each square coordinates if it's inside the labyrinth.
-        // If not, each square coordinates (x, y as in 2D) is replace by -1
+        // If not, both square coordinates (x & y as in 2D) are replaced by -1
         for (int i = 0; i != 4; i++) {
 
             if (Coordonnees[i][0] >= 0 && Coordonnees[i][0] < nbLigne && Coordonnees[i][1] >= 0
@@ -107,41 +108,39 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     // METHODE PRENDRE LA VOISINE ET CASSER LES MURS
     /**
-     * Each
+     * Select neighbors squares path which are unvisited and inside the labyrinthe,
+     * randomly select one and generate a path from the current path square
+     * to its neighbor by breaking crossing walls 
      * 
-     * @param Tab ?
-     * @return
+     * @param Tab neighbor coordinates of the current square path
+     * @return the neighbor coordinates of the next path square
      */
     public int[] PrendreLaVoisine(int[][] Tab) {
-        /*
-         * Dans Tab se situe respectivement le Nord, l'Est, le Sud, et l'Ouest des
-         * coordonnées de la case précédente
-         */
-
-        // On cherche les voisines non visitées
+ 
         ArrayList<Integer> TabPuce = new ArrayList();
 
         int x = (int) (Math.random() * (Tab.length - 2));
 
-        // Futur possibles coordonnées où nous nous placerons
         int[] Coord = { Tab[x][0], Tab[x][1] };
 
         // indice respectif de la case Nord, Est, Sud, Ouest
         int k = Tab.length - 2; // 2 ? current index and ?
 
-        // on selectionne les cases qui sont nouvelles que l'on peut visiter
+        // select all existing and unvisited neighbor square
         while (k > -1) {
+            
+            // Check if the neihbor square is inside the labyrint and is not visited 
             if (Tab[k][0] != -1 && chemin[Tab[k][0]][Tab[k][1]] == 0) {
-                // On ajoute les voisines libres
+                // If so, add the neighbor to the potential next path square
                 TabPuce.add(k);
             }
             k -= 1;
         }
 
+        // Randomly select the avalaible neighbor
         int l = (int) (Math.random() * TabPuce.size());
 
-        // On choisit au hasard l'indice des coordonnées dans la liste TabPuce qui
-        // correspond à la voisine à visiter
+
         if (TabPuce.size() == 0) {
             Coord[0] = Tab[4][0];
             Coord[1] = Tab[4][1];
@@ -149,52 +148,56 @@ public class VotreLabyrinthe implements Labyrinthe {
         }
         
 
-        if (TabPuce.get(l) == 0) { // Si la case Nord fut choisie
+        // If North square neighbor is selected, a crossing is created 
+        // by breaking the North wall of current path square and the South Wall of neighbor path square
+        if (TabPuce.get(l) == 0) { 
+            // Break North wall of current path square
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 1;
-            // On casse notre mur
+            // Break South wall of neighbor path square
             labyrinthe[Tab[4][0] - 1][Tab[4][1]] -= 4;
-            // On casse le mur de la voisine
+            
             Coord[0] = Tab[4][0] - 1;
             Coord[1] = Tab[4][1];
 
             return (Coord);
         }
 
+        // Est neighbor
         if (TabPuce.get(l) == 1) { // si la case Est fut choisie
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 2;
-            // On casse notre mur
+            // Break Est wall of current path square
             labyrinthe[Tab[4][0]][Tab[4][1] + 1] -= 8;
-            // On casse le mur de la voisine
+            // Break West wall of neighbor path square
             Coord[0] = Tab[4][0];
             Coord[1] = Tab[4][1] + 1;
             return (Coord);
         }
 
+        // South neighbor
         if (TabPuce.get(l) == 2) { // Si la case Sud fut choisie
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 4;
-            // On casse notre mur
+            // Break South wall of neighbor path square
             labyrinthe[Tab[4][0] + 1][Tab[4][1]] -= 1;
-            // On casse le mur de la voisine
+            // Break North wall of neighbor path square
             Coord[0] = Tab[4][0] + 1;
             Coord[1] = Tab[4][1];
-            // System.out.println("\n"+"Les coordonnées sont : "+Coord[0]+" "+Coord[1]);
             return (Coord);
         }
 
-        if (TabPuce.get(l) == 3) {// Si la case Ouest fut choisie
+        // West neighbor
+        if (TabPuce.get(l) == 3) {
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 8;
-            // On casse notre mur
+            // Break West wall of neighbor path square
             labyrinthe[Tab[4][0]][Tab[4][1] - 1] -= 2;
-            // On casse le mur de la voisine
+            // Break Est wall of neighbor path square
             Coord[0] = Tab[4][0];
             Coord[1] = Tab[4][1] - 1;
-            // System.out.println("\n"+"Les coordonnées sont : "+Coord[0]+" "+Coord[1]);
             return (Coord);
         }
 
         return Coord;
     }
-    // CHERCHE LIGNE CASE DE DEBUT ET CASE DE FIN
+ 
 
     /**
      * Generate start and end row coordinates 
@@ -206,25 +209,35 @@ public class VotreLabyrinthe implements Labyrinthe {
         return coordinates;
     }
 
-    // CHOIX AlÉTOIRE DE LA CASE VOISINE QUE L'ON CHOISIRA SI AUCUNE CASE N'EST
-    // DISPONIBLE AU ALENTOURE
+    
+
+    /**
+     * Randomly select a neighbor if all neighbors are unavailable
+     * 
+     * @param Tab 
+     * @return the neighbor coordinates
+     */
     public int[] ChoixVoisine(int[][] Tab) {
-        ArrayList<Integer> Indice = new ArrayList(); // Futur possible coordonnées où nous nous placeron
+        
+        ArrayList<Integer> potentialNeighborIndexes = new ArrayList();
         int k = Tab.length - 2;
+
+        // Check all unvisited neighbors 
         while (k > -1) {
             if (Tab[k][0] != -1) {
-                Indice.add(k); // On ajoute les indices des possibles voisines
+                potentialNeighborIndexes.add(k);
             }
             k -= 1;
         }
-        // System.out.println();
-        int x = (int) (Math.random() * Indice.size());// On effectue le choix de l'indice aléatoire
-        // System.out.println("Le nombre aléatoire est : "+x);
-        int[] Coord = new int[2];
-        Coord[0] = Tab[Indice.get(x)][0];
-        Coord[1] = Tab[Indice.get(x)][1];
-        // System.out.print("Les nouveaux coordonnées sont : "+Coord[0]+", "+Coord[1]);
-        return Coord;
+        
+        // Randomly select the neighbor
+        int randNeighborIndex = (int) (Math.random() * potentialNeighborIndexes.size());
+        int[] neighborCoordinates = { 
+                                    Tab[potentialNeighborIndexes.get(randNeighborIndex)][0],
+                                    Tab[potentialNeighborIndexes.get(randNeighborIndex)][1]
+                                 };
+    
+        return neighborCoordinates;
     }
 
     
