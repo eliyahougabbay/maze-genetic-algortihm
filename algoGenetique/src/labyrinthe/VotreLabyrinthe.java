@@ -68,11 +68,11 @@ public class VotreLabyrinthe implements Labyrinthe {
 
 
     /**
-     * Check on which square coordinates the path may continue
+     * Find which neighbor square coordinates where the path may continue
      * 
-     * @param ligne   the row square coordinates where the chemin stopped
-     * @param colonne the row square coordinates where the chemin stopped
-     * @return array of available square coordinates
+     * @param ligne   the row square coordinates where the path stopped
+     * @param colonne the column square coordinates where the path stopped
+     * @return array of all available neighbor square coordinates
      */
     public int[][] ChercheLesVoisines(int ligne, int colonne) {
 
@@ -199,7 +199,7 @@ public class VotreLabyrinthe implements Labyrinthe {
     /**
      * Generate start and end row coordinates 
      * 
-     * @return vector of start and end coordinates 
+     * @return coordinates vector 
      */
     public int[] ChercheES() {
         int[] coordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
@@ -227,61 +227,30 @@ public class VotreLabyrinthe implements Labyrinthe {
         return Coord;
     }
 
-    // CREATION DU LABYRINTHE
-
-    public void CreerLabyrinte() {
-        // Choix aleatoire de la premiere cellule
-        // System.out.println();
-        int l = (int) (Math.random() * nbLigne);
-        int c = (int) (Math.random() * nbColonne);
-        // On met la premiere case choisie comme visitee
-        chemin[l][c] = 1;
-        int curseur = 1;
-        int k = 1;
-        while (curseur != nbLigne * nbColonne) {// on arrete une fois avoir visité toutes les cases
-            int[][] lesVoisines = ChercheLesVoisines(l, c);
-            int[] PredreLaVoisine = PrendreLaVoisine(lesVoisines);
-            l = PredreLaVoisine[0];
-            c = PredreLaVoisine[1];
-            // System.out.println("La valeur du chemin est : "+chemin[l][c]);
-            if (chemin[l][c] == 0) {
-                chemin[l][c] = k + 1;
-                k = chemin[l][c];
-                curseur++;
-            } else {
-                int[] Voisine = ChoixVoisine(lesVoisines);
-                l = Voisine[0];
-                c = Voisine[1];
-            }
-
-        }
-        // cassage des murs entrée et sortie
-        int[] LigneMursES = ChercheES();
-        ligneDep = LigneMursES[0];
-        ligneArr = LigneMursES[1];
-        labyrinthe[LigneMursES[0]][0] = labyrinthe[LigneMursES[0]][0] - 8;// on casse le mur a l'ouest
-        labyrinthe[LigneMursES[1]][nbColonne - 1] = labyrinthe[LigneMursES[0]][0] - 2;// on casse le mur a l'est
-    }
-    // IMPLEMENTATION DES METHODES DE L'INTERFACE LABYRINTHE
-
+    
+    
     @Override
     public void generer(int nl, int nc) {
-        // nbLigne=nl;
-        // nbColonne=nc;
-        // Choix aleatoire de la premiere cellule
-        // System.out.println();
+        
+        // Randomly select the square coordinates to start generating the labyritnh    
         int l = (int) (Math.random() * nbLigne);
         int c = (int) (Math.random() * nbColonne);
-        // On met la premiere case choisie comme visitee
+       
+        // First square is marked as visited
         chemin[l][c] = 1;
+
         int curseur = 1;
         int k = 1;
-        while (curseur != nbLigne * nbColonne) {// on arrete une fois avoir visité toutes les cases
+        // Stop once all square are visited
+        while (curseur != nbLigne * nbColonne) {
+            
             int[][] lesVoisines = ChercheLesVoisines(l, c);
+            
             int[] PredreLaVoisine = PrendreLaVoisine(lesVoisines);
+            
             l = PredreLaVoisine[0];
             c = PredreLaVoisine[1];
-            // System.out.println("La valeur du chemin est : "+chemin[l][c]);
+            
             if (chemin[l][c] == 0) {
                 chemin[l][c] = k + 1;
                 k = chemin[l][c];
@@ -293,64 +262,51 @@ public class VotreLabyrinthe implements Labyrinthe {
             }
 
         }
-        // cassage des murs entrée et sortie
+        
+
         int[] LigneMursES = ChercheES();
         ligneDep = LigneMursES[0];
         ligneArr = LigneMursES[1];
-        labyrinthe[LigneMursES[0]][0] -= 8;// on casse le mur a l'ouest
-        labyrinthe[LigneMursES[1]][nbColonne - 1] -= 2;// on casse le mur a l'est
-
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
+        // Break start West wall 
+        labyrinthe[LigneMursES[0]][0] -= 8;
+        // Break end Est wall
+        labyrinthe[LigneMursES[1]][nbColonne - 1] -= 2;
     }
+
 
     @Override
     public void setFenetre(Fenetre fen) {
         this.fen = fen;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getNbLignes() {
         return nbLigne;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getNbCols() {
         return nbColonne;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getCellule(int nl, int nc) {
         return labyrinthe[nl][nc];
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getType() {
         return ORIENTATION;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getDepart() {
         return ligneDep;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getArrivee() {
         return ligneArr;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
