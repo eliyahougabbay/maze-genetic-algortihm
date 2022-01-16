@@ -19,4 +19,6 @@ One may be :
 ```console
 Est West Est Est North South South North
 ```
-corresponding to each direction the path should go. <br>Then the genetic algorithm compute the right sequence to solve the maze.
+corresponding to each direction the path should go. <br>
+<br>
+Then the genetic algorithm compute the right sequence to solve the maze.
