@@ -46,6 +46,7 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     }
 
+
     /**
      * Print each labyrinthe square value & path value
      */
@@ -64,6 +65,7 @@ public class VotreLabyrinthe implements Labyrinthe {
             System.out.println();
         }
     }
+
 
     /**
      * Find all neighbors where the path may continue
@@ -103,7 +105,7 @@ public class VotreLabyrinthe implements Labyrinthe {
         return CoordonnesPossibles;
     }
 
-    // METHODE PRENDRE LA VOISINE ET CASSER LES MURS
+    
     /**
      * Select neighbors squares path which are unvisited and inside the labyrinthe,
      * randomly select one and generate a path from the current path square
@@ -194,8 +196,9 @@ public class VotreLabyrinthe implements Labyrinthe {
         return Coord;
     }
 
+
     /**
-     * Generate start and end row coordinates
+     * Randomly generate start and end row coordinates
      * 
      * @return coordinates vector
      */
@@ -204,10 +207,11 @@ public class VotreLabyrinthe implements Labyrinthe {
         return coordinates;
     }
 
+
     /**
-     * Randomly select a neighbor if all neighbors are unavailable
+     * Randomly select a neighbor if all neighbors are unavailable.
      * 
-     * @param Tab
+     * @param Tab coordinates available
      * @return the neighbor coordinates
      */
     public int[] ChoixVoisine(int[][] Tab) {
@@ -232,6 +236,7 @@ public class VotreLabyrinthe implements Labyrinthe {
 
         return neighborCoordinates;
     }
+
 
     @Override
     public void generer(int nl, int nc) {
