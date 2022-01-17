@@ -2,7 +2,7 @@
 The goal is to sovle a maze by a genetic algorithm. Aim to simulate natural selection.
 
 <p align="center">
-  <img src="screenshots\maze.png" />
+  <img src="screenshots\window.png" />
 </p>
 
 
@@ -22,3 +22,32 @@ Est West Est Est North South South North
 corresponding to each direction the path should go. <br>
 <br>
 Then the genetic algorithm compute the right sequence to solve the maze.
+
+### Before resolution
+
+> Sequences and scores are not related to the labyrinth above.
+
+First, random sequences are generated, and scores are computed by a an Euclidean norm. <br>
+*The better the score, the better the sequence.* 
+
+<p align="center">
+  <img src="screenshots\genetic_DNA.png" />
+</p>
+
+<p align="center">
+  <img src="screenshots\scores.png" />
+</p>
+
+### After resolution
+
+After resolution, each individual share the same DNA sequence (the path to the end square) and scores (euclidean distances) are low. <br>
+
+<p align="center">
+  <img src="screenshots\solved_genetic_DNA.png" />
+</p>
+
+<p align="center">
+  <img src="screenshots\solved_scores.png" />
+</p>
+
+> The euclidean norm should be equal to 0, however the sequence path stop one square further the labyrinth finish.
