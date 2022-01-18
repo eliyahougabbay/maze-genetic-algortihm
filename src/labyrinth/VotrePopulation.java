@@ -20,11 +20,12 @@ public class VotrePopulation implements Population {
         // this.NbLignes=NbLignes;
         this.lab = lab;
         // this.NbColonnes=NbColonnes;
-        VotreIndividu Population[] = new VotreIndividu[NbIndividu]; // On créer un tableau regroupant tous les
-                                                                    // individus, et donc sa taille correspond au nombre
-                                                                    // d'individus
+
+        // On créer un tableau regroupant tous les individus, et donc sa taille correspond au nombre d'individus
+        VotreIndividu Population[] = new VotreIndividu[NbIndividu]; 
         for (int i = 0; i < Population.length; i++) {
-            Population[i] = new VotreIndividu(lab); // On affecte un individu différent à chaque case du tableau
+            Population[i] = new VotreIndividu(lab); 
+            // On affecte un individu différent à chaque case du tableau
         }
         this.Population = Population;
     }
@@ -41,15 +42,22 @@ public class VotrePopulation implements Population {
     }
 
     // AFFECTE UN SCORE À CAQUE GÈNE
-    public double[] score() { // Méthode permettant de calculer le score de chaque individu de la population
+    /**
+     * Compute each individual score of the population
+     * 
+     * @return Population score
+     */
+    public double[] score() { 
+        // Méthode permettant de calculer le score de chaque individu de la population
         double[] score = new double[NbIndividu];
         for (int i = 0; i < Population.length; i++) {
             int[] Indice = Population[i].InfoGenome();
             score[i] = Population[i].getScore(Indice[0], Indice[1]);
         }
         scor = score;
-        return score; // retourne un table contenant le score de chaque individu de la population non
-                      // trié (par ordre décroissant)
+        return score; 
+        // retourne un table contenant le score de chaque individu de la population non
+        // trié (par ordre décroissant)
     }
     /*
      * //AFFECTE UN SCORE À CAQUE GÈNE public double score(int k,int i,int j) { //

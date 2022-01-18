@@ -25,17 +25,18 @@ public class Main {
          * Creer le Labyrinthe
          */
         Fenetre fen = new Fenetre();
-        VotreLabyrinthe parcours = new VotreLabyrinthe(10, 10);
+        VotreLabyrinthe parcours = new VotreLabyrinthe(15, 15);
         fen.setLabyrinthe(parcours);
 
        
 
         // // TEST VotreIndividu
-        // int nl = 5, nc = 5;
+        // int nl = 12, nc = 12;
         // /*
         //  * Creer un labyrinthe de taille nl x nc puis créer une population de genome la
         //  * taille du labyrinthe
         //  */
+
         // VotreLabyrinthe lab = new VotreLabyrinthe(nl, nc);
         // VotrePopulation pop = new VotrePopulation(25, lab);
         // /* Affiche la populaton en code Nord, Est, Sud, Ouest */
@@ -53,9 +54,9 @@ public class Main {
         // // pop.Afficher();
         // pop.AfficherScore();
 
-        // /*
-        //  * //pop.tri(); //pop.Afficher();
-        //  */
+        /*
+         * //pop.tri(); //pop.Afficher();
+         */
 
     }
 

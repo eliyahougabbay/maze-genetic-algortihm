@@ -2,10 +2,12 @@ package labyrinth;
 
 import static labyrinth.Labyrinthe.ORIENTATION;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * A Class to randomly generate a {@link Labyrinthe}.
+ * A class to generate a {@link Labyrinthe}.
  * 
  * @author GABBAY
  */
@@ -36,22 +38,26 @@ public class VotreLabyrinthe implements Labyrinthe {
         this.labyrinthe = new int[nl][nc];
         this.chemin = new int[nl][nc];
 
-        for (int i = 0; i < nl; i++) {
-            for (int j = 0; j < nc; j++) {
+    }
+
+    /**
+     * Initialize both labyrinth and path values 
+     */
+    public void initLabyrinthValues() {
+        for (int i = 0; i < nbLigne; i++) {
+            for (int j = 0; j < nbColonne; j++) {
                 // each case sum is 15 = (North) 1 + (Est) 2 + (South) 4 + (West) 8
                 labyrinthe[i][j] = 15;
                 //
                 chemin[i][j] = 0;
             }
         }
-
     }
-
 
     /**
      * Print each labyrinthe square value & path value
      */
-    public void afficherLab() {
+    public void printLab() {
         for (int i = 0; i < labyrinthe.length; i++) {
             for (int j = 0; j < labyrinthe[0].length; j++) {
                 System.out.print(labyrinthe[i][j] + " ");
@@ -240,6 +246,8 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     @Override
     public void generer(int nl, int nc) {
+
+        initLabyrinthValues();
 
         // Randomly select the square coordinates to start generating the labyritnh
         int l = (int) (Math.random() * nbLigne);
