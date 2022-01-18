@@ -1,6 +1,8 @@
-package labyrinthe;
+package labyrinth;
 
 import javax.swing.*;
+// import javax.swing.text.AttributeSet.ColorAttribute;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,21 +52,27 @@ public class Fenetre extends JFrame implements ActionListener {
     private Labyrinthe lab;
 
     public Fenetre() {
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Labyrinthe");
+        setTitle("Labyrinth");
+        
         // Recupere l'environnement graphique en cours
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        
         // Recupere le peripherique d'affichage
         GraphicsDevice gs = ge.getDefaultScreenDevice();
+        
         // Recupere les parametres de ce peripherique
         GraphicsConfiguration gc = gs.getDefaultConfiguration();
+        
         // Le parametres interessant est la taille du rectangle disponible
         // pour l'affichage.
         java.awt.Rectangle limites = gc.getBounds();
         int larg = (int) (limites.getWidth() * 0.8);
         int haut = (int) (limites.getHeight() * .8);
         setSize(larg, haut);
-        //positionnement de la fenetre a l'ecran
+        
+        // positionnement de la fenetre a l'ecran
         int px = ((int) (limites.getWidth() - larg)) / 2;
         int py = 20;
         setLocation(px, py);
@@ -73,38 +81,45 @@ public class Fenetre extends JFrame implements ActionListener {
         Container contenu = getContentPane();
         contenu.setLayout(new BorderLayout(5, 5));
 
-        // Panneau gauche
+        /**
+         * Left Panel
+         */
         JPanel gauche = new JPanel();
         contenu.add(gauche, BorderLayout.LINE_START);
         JPanel vertic = new JPanel();
         gauche.add(vertic);
-        vertic.setLayout(new BoxLayout(vertic, BoxLayout.PAGE_AXIS));
+        vertic.setLayout(new BoxLayout(vertic, BoxLayout.Y_AXIS));
+
         // saisie des lignes
         JLabel lLignes = new JLabel();
         lLignes.setText("lignes");
-        lLignes.setAlignmentX(0.5f);
+        // lLignes.setAlignmentX(Component.LEFT_ALIGNMENT);
         vertic.add(lLignes);
         tLignes = new JTextField();
         tLignes.setText("10");
         vertic.add(tLignes);
+
         // saisie des colonnes
         JLabel lCols = new JLabel();
-        lCols.setText("colonnes");
-        lCols.setAlignmentX(0.5f);
+        lCols.setText("colonnes");;
+        lCols.setAlignmentX(0.0f);
         vertic.add(lCols);
-        lCols.setAlignmentX(0.5f);
+        // lCols.setAlignmentX(0.5f);
         tCols = new JTextField();
         tCols.setText("10");
         vertic.add(tCols);
+        
         // bouton de génération du labyrinthe
         bNouveau = new JButton();
-        bNouveau.setText("Nouveau");
+        bNouveau.setText("New");
         bNouveau.setActionCommand("Nouveau");
         bNouveau.addActionListener(this);
+        bNouveau.setBackground(Color.WHITE);
         vertic.add(bNouveau);
-
+        
         vertic.add(Box.createVerticalStrut(20));
-
+        
+        // Polutation field
         JLabel lPop = new JLabel();
         lPop.setText("population");
         lPop.setAlignmentX(0.5f);
@@ -113,6 +128,8 @@ public class Fenetre extends JFrame implements ActionListener {
         tPop = new JTextField();
         tPop.setText("25");
         vertic.add(tPop);
+
+        // Generation field
         JLabel lGen = new JLabel();
         lGen.setText("générations");
         lGen.setAlignmentX(0.5f);
@@ -121,24 +138,44 @@ public class Fenetre extends JFrame implements ActionListener {
         tGen = new JTextField();
         tGen.setText("1000");
         vertic.add(tGen);
-
+        
+        // Find solution field
         bChercher = new JButton();
         bChercher.setText("Chercher");
         bChercher.setActionCommand("Chercher");
         bChercher.addActionListener(this);
+        bChercher.setBackground(Color.WHITE);
         vertic.add(bChercher);
 
         vertic.add(Box.createVerticalGlue());
 
-        // zone de dessin
+        /**
+         * Drawing area
+         */
         Dimension dimV = vertic.getMinimumSize();
         int ll = larg - dimV.width - 5;
         int hh = haut - 25;
         canvas = new Dessin(ll, hh, this);
         contenu.add(canvas, BorderLayout.CENTER);
+     
+        /**
+         * Logs area
+         */
+        JPanel logsPanel = new JPanel();
+        logsPanel.setBackground(Color.LIGHT_GRAY);
+        contenu.add(logsPanel, BorderLayout.PAGE_END);
+
+        JTextArea logs = new JTextArea();
+        logs.setEditable(false);
+        logs.setBackground(Color.LIGHT_GRAY);
+        String logString = "> Labyrinth initialized";
+        logs.setText(logString); 
+        logsPanel.add(logs);
+
         pack();
         setVisible(true);
     }
+
 
     /**
      * Affectation du labyrinthe.
@@ -146,11 +183,12 @@ public class Fenetre extends JFrame implements ActionListener {
      * @param labyrinthe le labyrinthe choisi.
      */
     public void setLabyrinthe(Labyrinthe labyrinthe) {
-        lab = labyrinthe;
+        this.lab = labyrinthe;
         canvas.setLabyrinthe(labyrinthe);
         labyrinthe.setFenetre(this);
-        actionPerformed(new ActionEvent(this,0,"Nouveau"));
+        actionPerformed(new ActionEvent(this, 0, "Nouveau"));
     }
+
 
     /**
      * Demande l'affichage du labyrinthe vide.
@@ -158,6 +196,7 @@ public class Fenetre extends JFrame implements ActionListener {
     public void dessinerLabyrinthe() {
         canvas.dessinerLabyrinthe();
     }
+
 
     /**
      * Demande l'affichage d'un individu (en jaune).
@@ -167,6 +206,7 @@ public class Fenetre extends JFrame implements ActionListener {
     public void afficher(Individu ind) {
         canvas.afficher(ind);
     }
+
 
     /**
      * Affiche les emplacements balayés par la population. Tous les individus
@@ -178,6 +218,7 @@ public class Fenetre extends JFrame implements ActionListener {
         canvas.afficher(pop);
     }
 
+    
     /**
      * Reception et traitement des évènements de la fenetre. Les informations
      * correspondantes sont transmises au labyrinthe.
@@ -192,12 +233,14 @@ public class Fenetre extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Nouveau":
+                System.out.println(e);
+                System.out.println("clicked!");
                 int nl = Integer.parseInt(tLignes.getText());
                 int nc = Integer.parseInt(tCols.getText());
                 if (canvas.setDim(nl, nc)) {
                     canvas.getLabyrinthe().generer(nl, nc);
                     repaint();
-                }
+                } 
                 break;
             case "Chercher":
                 int npop = Integer.parseInt(tPop.getText());

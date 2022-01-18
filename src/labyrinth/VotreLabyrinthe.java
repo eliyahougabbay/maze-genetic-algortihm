@@ -1,7 +1,8 @@
-package labyrinthe;
+package labyrinth;
+
+import static labyrinth.Labyrinthe.ORIENTATION;
 
 import java.util.ArrayList;
-import static labyrinthe.Labyrinthe.ORIENTATION;
 
 /**
  * A Class to randomly generate a {@link Labyrinthe}.
@@ -146,8 +147,7 @@ public class VotreLabyrinthe implements Labyrinthe {
         }
 
         // If North square neighbor is selected, a crossing is created
-        // by breaking the North wall of current path square and the South Wall of
-        // neighbor path square
+        // by breaking the North wall of current square and the South Wall of neighbor square
         if (TabPuce.get(l) == 0) {
             // Break North wall of current path square
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 1;
@@ -203,8 +203,8 @@ public class VotreLabyrinthe implements Labyrinthe {
      * @return coordinates vector
      */
     public int[] ChercheES() {
-        int[] coordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
-        return coordinates;
+        int[] ESRowCoordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
+        return ESRowCoordinates;
     }
 
 
@@ -323,7 +323,5 @@ public class VotreLabyrinthe implements Labyrinthe {
             population.Mutation();
         }
         // population = new VotrePopulation();
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 }
