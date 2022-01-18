@@ -79,7 +79,7 @@ public class Fenetre extends JFrame implements ActionListener {
 
         // Declaration du contenu de la fenetre
         Container contenu = getContentPane();
-        contenu.setLayout(new BorderLayout(5, 5));
+        contenu.setLayout(new BorderLayout());
 
         /**
          * Left Panel
@@ -233,12 +233,11 @@ public class Fenetre extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Nouveau":
-                System.out.println(e);
-                System.out.println("clicked!");
                 int nl = Integer.parseInt(tLignes.getText());
                 int nc = Integer.parseInt(tCols.getText());
                 if (canvas.setDim(nl, nc)) {
                     canvas.getLabyrinthe().generer(nl, nc);
+                    System.out.println(canvas.getLabyrinthe());
                     repaint();
                 } 
                 break;

@@ -2,6 +2,8 @@ package labyrinth;
 
 import static labyrinth.Labyrinthe.ORIENTATION;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**

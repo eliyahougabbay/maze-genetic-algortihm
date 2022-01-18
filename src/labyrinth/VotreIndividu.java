@@ -64,11 +64,24 @@ public class VotreIndividu implements Individu {
 
     // RETOURNE LA DISTANCE À LA CELLULE DE SORTIE DE LA DERNIERE CELLULE DE CHEMIN
     // VALIDE
+    /**
+     * Get distance between last path square and labyrinth exit.
+     * 
+     * @param i row square number
+     * @param j column square number
+     * @return euclidean distance 
+     */
     public double getDistance(int i, int j) {
-        return (Math.sqrt((lab.getArrivee() - i) * (lab.getArrivee() - i) + (nbc - 1 - j) * (nbc - 1 - j)));
+        return (Math.sqrt(Math.pow((lab.getArrivee() - i), 2) + Math.pow((nbc - 1 - j), 2)));
     }
 
-    // DONNE LE SCORE DE LA CELLULE D'INDICE DE LIGNE I DE COLONNE J
+    /**
+     * Get score of i,j coordinates square
+     * 
+     * @param i row number
+     * @param j column number 
+     * @return score
+     */
     public double getScore(int i, int j) {
         double s = (1 - ALPHA) * this.getDistance(i, j) / Math.sqrt(nbl * nbl + nbc * nbc)
                 + ALPHA * (nbl * nbc - this.getLimite()) / (nbl * nbc);
@@ -76,6 +89,10 @@ public class VotreIndividu implements Individu {
     }
 
     // ON ACQUIERT TOUTES LES INFOS NECESSAIRE AU GENOME
+    /**
+     * 
+     * @return 
+     */
     public int[] InfoGenome() {
         // System.out.println();
         /* On va supposer que le gene commence par l'entrée */
@@ -95,7 +112,7 @@ public class VotreIndividu implements Individu {
         int i = 0;
         int k = 0;
         // boolean b=false;
-        
+
         while (i < nbl * nbc) {
 
             k++;
