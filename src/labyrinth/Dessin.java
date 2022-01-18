@@ -305,7 +305,7 @@ public class Dessin extends JPanel {
         int dx = (larg - (nc * (dim - 1) + 1)) / 2;
         int dy = (haut - (nl * (dim - 1) + 1)) / 2;
         int ld = labyrinthe.getDepart();
-        int la = labyrinthe.getArrivee();
+        // int la = labyrinthe.getArrivee();
         int cc = 0;
         int lc = ld;
         // tous les parcours s'effectuent en orientation

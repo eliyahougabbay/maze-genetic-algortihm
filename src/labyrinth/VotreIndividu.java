@@ -95,77 +95,71 @@ public class VotreIndividu implements Individu {
         int i = 0;
         int k = 0;
         // boolean b=false;
+        
         while (i < nbl * nbc) {
+
             k++;
             int m = lab.getCellule(il, ic);
-            boolean[] murs = { false, false, false, false };// Murs Nord, Est, Sud, Ouest
+            boolean[] walls = { false, false, false, false };
+
             if (m >= 8) {
-                murs[3] = true;
+                walls[3] = true;
                 m -= 8;
             }
             if (m >= 4) {
-                murs[2] = true;
+                walls[2] = true;
                 m -= 4;
             }
             if (m >= 2) {
-                murs[1] = true;
+                walls[1] = true;
                 m -= 2;
             }
             if (m >= 1) {
-                murs[0] = true;
+                walls[0] = true;
             }
-            // for (int l=0;l<murs.length;l++){System.out.print(murs[l]);}
             /*
-             * Après avoir regarde tous les murs disponible on test si le genome ne saute
+             * Après avoir regarde tous les murs disponibles on test si le genome ne saute
              * pas un mur : si non, on passe aux coordonnées suivantes
              */
-            if (genome[i] == 1 && murs[0] && il >= 1) {
+            if (genome[i] == 1 && walls[0] && il >= 1) {
                 il -= 1;
-            } else if (genome[i] == 2 && murs[1] && ic <= 2) {
+            } else if (genome[i] == 2 && walls[1] && ic <= 2) {
                 ic += 1;
-            } else if (genome[i] == 4 && murs[2] && il <= 2) {
+            } else if (genome[i] == 4 && walls[2] && il <= 2) {
                 il += 1;
-            } else if (genome[i] == 8 && murs[3] && ic >= 1) {
+            } else if (genome[i] == 8 && walls[3] && ic >= 1) {
                 ic -= 1;
             } else {
                 i = nbl * nbc;
             }
-            // System.out.println("Les coordonnées sont : "+il+", "+ic);
+
             i++;
         }
         lim = k;
         this.il = il;
         this.ic = ic;
-        // System.out.print("Les coordonnées de la case limite sont : "+ il+",
-        // "+ic+"\nLa longueur est : "+lim+"\n");
+        
         return (new int[] { il, ic, k });
     }
 
+
     @Override
     public int[] getGenome() {
-        return genome;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
+        return this.genome;
     }
 
     @Override
     public void setGenome(int[] genome) {
         this.genome = genome;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int getLimite() {
-        return lim;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
+        return this.lim;
     }
 
     @Override
     public void setLimite(int lim) {
         this.lim = lim;
-        // throw new UnsupportedOperationException("Not supported yet."); //To change
-        // body of generated methods, choose Tools | Templates.
     }
 }

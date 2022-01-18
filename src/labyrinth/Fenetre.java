@@ -1,7 +1,7 @@
 package labyrinth;
 
 import javax.swing.*;
-import javax.swing.text.AttributeSet.ColorAttribute;
+// import javax.swing.text.AttributeSet.ColorAttribute;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -183,7 +183,7 @@ public class Fenetre extends JFrame implements ActionListener {
      * @param labyrinthe le labyrinthe choisi.
      */
     public void setLabyrinthe(Labyrinthe labyrinthe) {
-        lab = labyrinthe;
+        this.lab = labyrinthe;
         canvas.setLabyrinthe(labyrinthe);
         labyrinthe.setFenetre(this);
         actionPerformed(new ActionEvent(this, 0, "Nouveau"));
