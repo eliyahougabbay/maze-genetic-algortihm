@@ -135,6 +135,11 @@ public interface Labyrinthe {
     public int getArrivee();
 
     /**
+     * Print lab values
+     */
+    public void printLab();
+
+    /**
      * Déclenche la recherche du chemin en utilisant le labyrinthe actuel.
      * <p>
      * Cette méthode suppose que la génération du labyrinthe a été faite avec
