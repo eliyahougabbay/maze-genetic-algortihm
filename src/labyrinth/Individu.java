@@ -1,4 +1,4 @@
-package labyrinthe;
+package labyrinth;
 
 /**
  * Interface que doit implémenter tout objet représentant un individu de la

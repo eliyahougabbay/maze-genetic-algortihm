@@ -1,4 +1,4 @@
-package labyrinthe;
+package labyrinth;
 
 /**
  * Un labyrinthe est un tableau de cases limitées par des murs.

@@ -1,4 +1,4 @@
-package labyrinthe;
+package labyrinth;
 
 /**
  * Votre Population doit implémenter cette interface. Elle est composée
