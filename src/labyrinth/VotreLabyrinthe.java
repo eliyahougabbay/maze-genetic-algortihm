@@ -22,28 +22,30 @@ public class VotreLabyrinthe implements Labyrinthe {
     private Fenetre fen;
     private VotrePopulation population;
 
+    
     /**
      * Constructor of the labyrinth.
      * Each square case has its 4 walls: North = 1, Est = 2, South = 4 & West = 8
      * whose sum is 15 = 1 + 2 + 4 + 8
      * 
+     */
+    public VotreLabyrinthe(){}
+
+
+    /**
+     * Initialize both labyrinth and path values 
+     * 
      * 
      * @param nl row number
      * @param nc column number
      */
-    public VotreLabyrinthe(int nl, int nc) {
+    public void initLabyrinthValues(int nl, int nc) {
 
         this.nbLigne = nl;
         this.nbColonne = nc;
         this.labyrinthe = new int[nl][nc];
         this.chemin = new int[nl][nc];
 
-    }
-
-    /**
-     * Initialize both labyrinth and path values 
-     */
-    public void initLabyrinthValues() {
         for (int i = 0; i < nbLigne; i++) {
             for (int j = 0; j < nbColonne; j++) {
                 // each case sum is 15 = (North) 1 + (Est) 2 + (South) 4 + (West) 8
@@ -247,7 +249,8 @@ public class VotreLabyrinthe implements Labyrinthe {
     @Override
     public void generer(int nl, int nc) {
 
-        initLabyrinthValues();
+
+        initLabyrinthValues(nl, nc);
 
         // Randomly select the square coordinates to start generating the labyritnh
         int l = (int) (Math.random() * nbLigne);
@@ -326,10 +329,12 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     @Override
     public void evoluer(int npop, int ngen) {
+        System.out.println("Mutation launched");
         population = new VotrePopulation(npop, this);
         for (int k = 0; k < ngen; k++) {
             population.Mutation();
         }
-        // population = new VotrePopulation();
+        System.out.println("Mutation finished");
+
     }
 }

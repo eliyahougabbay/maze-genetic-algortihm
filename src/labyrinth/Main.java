@@ -25,9 +25,16 @@ public class Main {
          * Creer le Labyrinthe
          */
         Fenetre fen = new Fenetre();
-        VotreLabyrinthe parcours = new VotreLabyrinthe(15, 15);
+        VotreLabyrinthe parcours = new VotreLabyrinthe();
         fen.setLabyrinthe(parcours);
 
+        VotrePopulation pop = new VotrePopulation(25, parcours);
+        
+        for (int k = 0; k < 10000; k++) {
+                pop.Mutation();
+            }
+
+        
        
 
         // // TEST VotreIndividu

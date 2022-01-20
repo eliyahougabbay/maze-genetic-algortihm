@@ -22,7 +22,10 @@ public class VotreIndividu implements Individu {
 
     public static final double ALPHA = 0.5;
 
-    // AFFICHER LE GENOME D'UN INDIVIDU
+    // AFFICHER LE GENOME D'UN 
+    /**
+     * Print invdual sequence 
+     */
     public void afficher() {
         for (int i = 0; i < nbl * nbc; i++) {
             System.out.print(" ");
@@ -32,6 +35,11 @@ public class VotreIndividu implements Individu {
     }
 
     // AFFICHER L'ORIENTATION D'UN GÈNE DU GÉNOME
+    /**
+     * Print individual sequence orientation
+     * 
+     * @param k
+     */
     public void afficherOrien(int k) {
         if (genome[k] == 1)
             System.out.print("Nord");
@@ -44,21 +52,31 @@ public class VotreIndividu implements Individu {
     }
 
     // RETOURNE LES INDICES DE LA LIMITE
+    /**
+     * Limits indexes 
+     * 
+     * @return
+     */
     public int[] retourIndice() {
         return new int[] { il, ic };
     }
 
-    // CONSTRUCTEUR : CREATION D'UN INDIVIDU QUI CORRESPOND À UN GENOME
+    
+    /**
+     * Generates a random sequence of the individual
+     * 
+     * @param lab the labyrinth
+     */
     public VotreIndividu(VotreLabyrinthe lab) {
+
         this.lab = lab;
         nbl = lab.getNbLignes();
         nbc = lab.getNbCols();
-        // creation du genome : On choisit l'orientation
-        int[] valPossible = { 1, 2, 4, 8 };
-        genome = new int[nbl * nbc];
-        // On créer un génome composer aléatoirement des entiers du tableau valPossible
+        // every possible orientation (North = 1, Est = 2, South = 4, West = 8)
+        int[] possibleOrientations = { 1, 2, 4, 8 };
+        this.genome = new int[nbl * nbc];
         for (int i = 0; i < nbl * nbc; i++) {
-            genome[i] = valPossible[(int) (Math.random() * valPossible.length)];
+            this.genome[i] = possibleOrientations[(int) (Math.random() * possibleOrientations.length)];
         }
     }
 
@@ -83,11 +101,12 @@ public class VotreIndividu implements Individu {
      * @return score
      */
     public double getScore(int i, int j) {
-        double s = (1 - ALPHA) * this.getDistance(i, j) / Math.sqrt(nbl * nbl + nbc * nbc)
+        double score = (1 - ALPHA) * this.getDistance(i, j) / Math.sqrt(nbl * nbl + nbc * nbc)
                 + ALPHA * (nbl * nbc - this.getLimite()) / (nbl * nbc);
-        return s;
+        return score;
     }
 
+    
     // ON ACQUIERT TOUTES LES INFOS NECESSAIRE AU GENOME
     /**
      * 

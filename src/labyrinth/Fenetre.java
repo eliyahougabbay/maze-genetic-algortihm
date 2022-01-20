@@ -233,16 +233,15 @@ public class Fenetre extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Nouveau":
-                System.out.println("clicked\n");
                 int nl = Integer.parseInt(tLignes.getText());
                 int nc = Integer.parseInt(tCols.getText());
                 if (canvas.setDim(nl, nc)) {
-                    canvas.getLabyrinthe().printLab();
                     canvas.getLabyrinthe().generer(nl, nc);
                     repaint();
                 } 
                 break;
             case "Chercher":
+                
                 int npop = Integer.parseInt(tPop.getText());
                 int ngen = Integer.parseInt(tGen.getText());
                 canvas.getLabyrinthe().evoluer(npop, ngen);

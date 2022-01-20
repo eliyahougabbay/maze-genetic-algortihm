@@ -40,6 +40,7 @@ public interface Individu {
      * @return l'indice du premier gene correspondant à une case non valide.
      */
     public int getLimite();
+    
     /**
      * Affecte la valeur limite.
      * @param lim l'indice dans le génome du premier gene non valide.
