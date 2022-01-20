@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package labyrinth;
 
-//import static labyrinthe.VotreIndividu.ALPHA;
 
 /**
- *
  * @author GABBAY
  */
 public class VotreIndividu implements Individu {
@@ -22,33 +15,37 @@ public class VotreIndividu implements Individu {
 
     public static final double ALPHA = 0.5;
 
-    // AFFICHER LE GENOME D'UN 
+
     /**
-     * Print invdual sequence 
+     * Print sequence genome
      */
-    public void afficher() {
-        for (int i = 0; i < nbl * nbc; i++) {
-            System.out.print(" ");
-            this.afficherOrien(i);
-        }
-        System.out.println();
+    public void printGenome(){
+        for (int gene : genome)
+            System.out.print(gene + " ");
     }
 
-    // AFFICHER L'ORIENTATION D'UN GÈNE DU GÉNOME
     /**
      * Print individual sequence orientation
+     * <br>
+     * <i>Change method to hashmap ?</i>
      * 
-     * @param k
+     * @param k gene index
      */
-    public void afficherOrien(int k) {
-        if (genome[k] == 1)
-            System.out.print("Nord");
-        if (genome[k] == 2)
-            System.out.print("Est");
-        if (genome[k] == 4)
-            System.out.print("Sud");
-        if (genome[k] == 8)
-            System.out.print("Ouest");
+    public void Orintation(int k) {
+        switch(genome[k]){
+            case 1:
+                System.out.print("North");
+                break;
+            case 2:
+                System.out.print("Est");
+                break;
+            case 3:
+                System.out.print("South");
+                break;
+            case 4:
+                System.out.print("west");
+                break;
+        }
     }
 
     // RETOURNE LES INDICES DE LA LIMITE
@@ -72,7 +69,7 @@ public class VotreIndividu implements Individu {
         this.lab = lab;
         nbl = lab.getNbLignes();
         nbc = lab.getNbCols();
-        // every possible orientation (North = 1, Est = 2, South = 4, West = 8)
+        // every possible orientation {North = 1, Est = 2, South = 4, West = 8}
         int[] possibleOrientations = { 1, 2, 4, 8 };
         this.genome = new int[nbl * nbc];
         for (int i = 0; i < nbl * nbc; i++) {
@@ -109,16 +106,18 @@ public class VotreIndividu implements Individu {
     
     // ON ACQUIERT TOUTES LES INFOS NECESSAIRE AU GENOME
     /**
+     * For every gene of the genome, check if gene crosses a wall. If so, 
+     * set the limite to the last valid square.
      * 
-     * @return 
+     * @return last valid square index in the genome
+     * - limit's row index
+     * - limit's column index
      */
     public int[] InfoGenome() {
-        // System.out.println();
-        /* On va supposer que le gene commence par l'entrée */
-        // ----- double[][] scoreGenome = new double[nbl][nbc]; ----
-        /* On veut les indices de départ (ces derniers vont évoluer): */
+ 
         int il = lab.getDepart(), ic = 0;
-        // System.out.println("Les coordonnées de départ sont : "+ il+", "+ic);
+        System.out.println("Les coordonnées de départ sont : "+ il+", "+ic);
+
         /*
          * On prend le genome et on regarde : - quels sont les endroits où il n'y a pas
          * de mur - si la direction prise par le génome est bonne - si oui : on passe à
@@ -130,7 +129,6 @@ public class VotreIndividu implements Individu {
          */
         int i = 0;
         int k = 0;
-        // boolean b=false;
 
         while (i < nbl * nbc) {
 
@@ -171,7 +169,7 @@ public class VotreIndividu implements Individu {
 
             i++;
         }
-        lim = k;
+        this.lim = k;
         this.il = il;
         this.ic = ic;
         

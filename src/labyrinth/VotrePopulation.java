@@ -3,7 +3,7 @@ package labyrinth;
 import javax.print.event.PrintJobListener;
 
 /**
- *
+ * A class to generate & sort the individuals by their score inside the population. This class also evolves the population by  
  * @author GABBAY
  */
 public class VotrePopulation implements Population {
@@ -16,36 +16,34 @@ public class VotrePopulation implements Population {
     private double[] scor;
 
     /**
-     * Initialise
+     * Initialise the population
      * 
      * @param NbIndividu total numebr of individuals
      * @param lab
      */
     public VotrePopulation(int NbIndividu, VotreLabyrinthe lab) {
-        this.NbIndividu = NbIndividu;
-        // this.NbLignes=NbLignes;
-        this.lab = lab;
-        // this.NbColonnes=NbColonnes;
 
-        // On créer un tableau regroupant tous les individus, et donc sa taille
-        // correspond au nombre d'individus
+        this.NbIndividu = NbIndividu;
+        this.lab = lab;
+
         VotreIndividu Population[] = new VotreIndividu[NbIndividu];
         for (int i = 0; i < Population.length; i++) {
-            // On affecte un individu différent à chaque case du tableau
             Population[i] = new VotreIndividu(lab);
         }
         this.Population = Population;
     }
+
 
     @Override
     public int getSize() {
         return NbIndividu;
     }
 
+
     @Override
     public Individu get(int i) {
+        System.out.print("coucou");
         return Population[i];
-
     }
 
     /**
@@ -68,24 +66,19 @@ public class VotrePopulation implements Population {
 
 
     /**
-     * Compute every gene a score
+     * Computes score of specific gene
      * 
-     * @param k 
-     * @param i 
-     * @param j 
+     * @param k index of individuals 
+     * @param i row index of the individual last square path
+     * @param j column index of the individual last square path
     */
     public double score(int k, int i, int j) { 
-        // Méthode permettant de calculer le score de chaque individu de la population
-        double score; score = Population[k].getScore(i,j); 
-        return score; 
-        // retourne un table contenant le score de chaque individu de la population non trié ordre décroissant) 
+        return Population[k].getScore(i,j); 
     }
 
-    // ÉFFECTUE LE TRI ENTRE TOUS LES INDIVIDUS EN NE GARDANT QUE LES MEILLEURS
-
+    
     /**
-     * 
-     * 
+     * Sort (by insertion) the population's individuals by their score from ascending order
      */
     public void tri() {
         // Méthode permettant de trier une liste dans l'ordre décroissant (tri à la fois
@@ -111,14 +104,21 @@ public class VotrePopulation implements Population {
 
     }
 
-    // METHODE SELECTION (1ERE ETAPE)
+
+    /**
+     * Select the 50% best individuals of which 25% are consiedered the best and 
+     * 75% remaining taken randomly inside the population
+     * 
+     * @return population of the new individuals.
+     */
     public VotreIndividu[] Selection() {
 
         VotreIndividu[] Populationbis = new VotreIndividu[NbIndividu / 2]; 
-        // retourne un tableau qui représente 50% de la population initiale, et contenant pour 25% d'individu ave cun bonscore et 75% d'individus choisis aléatoirement
+      
         this.tri(); 
 
         // On trie la liste Population. (VotrePopulation.tri() ne fonctionne pas !!)
+        // Sort the individuals
         for (int i = 0; i < NbIndividu / 8; i++) { 
             // 25% des 50% d'individus doivent être choisis comme étant les  meilleurs, c'est-à-dire ceux ayant le meilleur score
             Populationbis[i] = Population[i];
@@ -140,6 +140,11 @@ public class VotrePopulation implements Population {
     }
 
     // METHODE CROISEMENT (2EME ETAPE)
+    /**
+     * 
+     * 
+     * @return 
+     */
     public VotreIndividu[] Croisement() {
         // Méthode permettant de réaliser des croisement sur la Populationbis, pour  obtenir une nouvelle génération d'individus contenant Populationbis et leur ddance provenant de croisements
         VotreIndividu[] Populationterce = new VotreIndividu[NbIndividu];
@@ -257,9 +262,11 @@ public class VotrePopulation implements Population {
     // for (int i=0;i<Population.length;i++){
     // Population[i].afficher();
     // }
-    // }
+    // } 
 
-    // METHODE AFFICHER SCORE DE CHAQUE INDIVIDU DE LA POPULATION
+    /**
+     * Print every individuals score of the population
+     */
     public void AfficherScore() {
         double max = 0;
         double[] score = this.score();

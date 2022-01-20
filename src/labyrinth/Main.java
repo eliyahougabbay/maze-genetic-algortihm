@@ -15,12 +15,6 @@ public class Main {
 
     public static void main(String[] args) {
     
-
-        /*
-         * TEST VotreLabyrinthe Ces instructions suivantes permettent d'afficher un
-         * labyritnhe de taille 10x10
-         */
-        
         /**
          * Creer le Labyrinthe
          */
@@ -33,6 +27,9 @@ public class Main {
         for (int k = 0; k < 10000; k++) {
                 pop.Mutation();
             }
+        pop.AfficherScore();
+        System.out.println(pop.getSize());
+        System.out.println(pop.get(0));
 
         
        
