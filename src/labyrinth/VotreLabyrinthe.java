@@ -35,7 +35,6 @@ public class VotreLabyrinthe implements Labyrinthe {
     /**
      * Initialize both labyrinth and path values 
      * 
-     * 
      * @param nl row number
      * @param nc column number
      */
@@ -334,6 +333,8 @@ public class VotreLabyrinthe implements Labyrinthe {
         for (int k = 0; k < ngen; k++) {
             population.Mutation();
         }
+        population.getClass();
+        population.get(0).printGenome();
         System.out.println("Mutation finished");
 
     }

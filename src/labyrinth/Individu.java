@@ -28,6 +28,11 @@ public interface Individu {
     public int[] getGenome();
 
     /**
+     * Print genome
+     */
+    public void printGenome();
+
+    /**
      * Affecte un nouveau genome à l'individu.
      *
      * @param genome le nouveau genome.

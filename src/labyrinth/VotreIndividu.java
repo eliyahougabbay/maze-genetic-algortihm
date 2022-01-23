@@ -6,6 +6,9 @@ package labyrinth;
  */
 public class VotreIndividu implements Individu {
 
+    
+    public static final double ALPHA = 0.5;
+
     private int[] genome;
     private double[][] scoreGenome;
     private int lim;
@@ -13,16 +16,19 @@ public class VotreIndividu implements Individu {
     private int nbl, nbc;
     private int il, ic;
 
-    public static final double ALPHA = 0.5;
 
 
     /**
      * Print sequence genome
      */
     public void printGenome(){
-        for (int gene : genome)
-            System.out.print(gene + " ");
+        // for (int gene : genome)
+        //     System.out.print(gene + " ");
+        for (int gene : genome) {
+            printOrientation(gene);
+        }
     }
+
 
     /**
      * Print individual sequence orientation
@@ -31,28 +37,28 @@ public class VotreIndividu implements Individu {
      * 
      * @param k gene index
      */
-    public void Orintation(int k) {
+    public void printOrientation(int k) {
         switch(genome[k]){
             case 1:
-                System.out.print("North");
+                System.out.print("North ");
                 break;
             case 2:
-                System.out.print("Est");
+                System.out.print("Est ");
                 break;
             case 3:
-                System.out.print("South");
+                System.out.print("South ");
                 break;
             case 4:
-                System.out.print("west");
+                System.out.print("west ");
                 break;
         }
     }
 
-    // RETOURNE LES INDICES DE LA LIMITE
+    
     /**
      * Limits indexes 
      * 
-     * @return
+     * @return indexes
      */
     public int[] retourIndice() {
         return new int[] { il, ic };
@@ -116,7 +122,7 @@ public class VotreIndividu implements Individu {
     public int[] InfoGenome() {
  
         int il = lab.getDepart(), ic = 0;
-        System.out.println("Les coordonnées de départ sont : "+ il+", "+ic);
+        // System.out.println("Les coordonnées de départ sont : "+ il+", "+ic);
 
         /*
          * On prend le genome et on regarde : - quels sont les endroits où il n'y a pas

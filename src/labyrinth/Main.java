@@ -20,6 +20,7 @@ public class Main {
          */
         Fenetre fen = new Fenetre();
         VotreLabyrinthe parcours = new VotreLabyrinthe();
+        parcours.evoluer(25, 1000);
         fen.setLabyrinthe(parcours);
 
         VotrePopulation pop = new VotrePopulation(25, parcours);
@@ -28,6 +29,7 @@ public class Main {
                 pop.Mutation();
             }
         pop.AfficherScore();
+        
         System.out.println(pop.getSize());
         System.out.println(pop.get(0));
 

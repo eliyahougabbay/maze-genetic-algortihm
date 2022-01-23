@@ -257,12 +257,6 @@ public class VotrePopulation implements Population {
         // return Populationquat;
     }
 
-    // METHODE AFFICHER
-    // public void Afficher(){
-    // for (int i=0;i<Population.length;i++){
-    // Population[i].afficher();
-    // }
-    // } 
 
     /**
      * Print every individuals score of the population
