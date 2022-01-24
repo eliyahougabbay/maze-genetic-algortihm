@@ -3,17 +3,19 @@ package labyrinth;
 import javax.print.event.PrintJobListener;
 
 /**
- * A class to generate & sort the individuals by their score inside the population. This class also evolves the population by  
+ * A class to generate & sort the individuals by their score inside the
+ * population. This class also evolves the population by
+ * 
  * @author GABBAY
  */
 public class VotrePopulation implements Population {
 
     private int NbIndividu;
-    private VotreIndividu Ind;
+    // private VotreIndividu Ind;
     private VotreIndividu[] Population;
     // private int NbLignes,NbColonnes;
     private VotreLabyrinthe lab;
-    private double[] scor;
+    // private double[] scor;
 
     /**
      * Initialise the population
@@ -33,12 +35,10 @@ public class VotrePopulation implements Population {
         this.Population = Population;
     }
 
-
     @Override
     public int getSize() {
         return NbIndividu;
     }
-
 
     @Override
     public Individu get(int i) {
@@ -52,121 +52,129 @@ public class VotrePopulation implements Population {
      * @return Population score
      */
     public double[] score() {
-        // Méthode permettant de calculer le score de chaque individu de la population
+
         double[] score = new double[NbIndividu];
-        for (int i = 0; i < Population.length; i++) {
-            int[] Indice = Population[i].InfoGenome();
-            score[i] = Population[i].getScore(Indice[0], Indice[1]);
+        for (int i = 0; i < NbIndividu; i++) {
+            int[] indexes = Population[i].InfoGenome();
+            score[i] = Population[i].getScore(indexes[0], indexes[1]);
         }
-        scor = score;
+        // scor = score;
         return score;
-        // retourne un table contenant le score de chaque individu de la population non
-        // trié (par ordre décroissant)
     }
 
-
     /**
-     * Computes score of specific gene
+     * Computes score of a specific individual
      * 
-     * @param k index of individuals 
-     * @param i row index of the individual last square path
-     * @param j column index of the individual last square path
-    */
-    public double score(int k, int i, int j) { 
-        return Population[k].getScore(i,j); 
+     * @param k index of the individual
+     * @param i row index of the individual last valid square
+     * @param j column index of the individual last valid square
+     */
+    public double score(int k, int i, int j) {
+        return Population[k].getScore(i, j);
     }
 
-    
     /**
-     * Sort (by insertion) the population's individuals by their score from ascending order
+     * <p>
+     * Sort (by insertion) the population's individuals by their score in ascending
+     * order
+     * </p>
+     * <p>
+     * <i>Use hashmap instead</i>
+     * </p>
+     * 
      */
-    public void tri() {
-        // Méthode permettant de trier une liste dans l'ordre décroissant (tri à la fois
-        // de la liste Population et de la liste score de la méthode score)
-        int[] Position = new int[NbIndividu];
+    public void sortByScore() {
+
+        // int[] Position = new int[NbIndividu];
         double[] score = this.score();
         for (int i = 0; i < Population.length; i++) {
             for (int j = i + 1; j < Population.length; j++) {
-                if (score[i] >= score[j]) {
-                    // tri décroissant du tableau score de la méthode score
-                    double stockage1 = score[i];
-                    score[i] = score[j];
-                    score[j] = stockage1;
-                    // tri décroissant des individus du tableau Population de ceux ayant le meilleur
-                    // score a ceux ayant le pire score
-                    VotreIndividu stockage2 = Population[i];
-                    Population[i] = Population[j];
-                    Population[j] = stockage2;
+
+                if (score[j] >= score[i]) {
+
+                    double temp = score[j];
+                    score[j] = score[i];
+                    score[i] = temp;
+
+                    VotreIndividu tmp = Population[j];
+                    Population[j] = Population[i];
+                    Population[i] = tmp;
                 }
             }
         }
-        scor = score;
+        // scor = score;
 
     }
 
-
     /**
-     * Select the 50% best individuals of which 25% are consiedered the best and 
-     * 75% remaining taken randomly inside the population
+     * Select the 50% best individuals of which 25% are consiedered the best and
+     * the 75% remaining are taken randomly inside the population
      * 
      * @return population of the new individuals.
      */
-    public VotreIndividu[] Selection() {
+    public void selection() {
 
-        VotreIndividu[] Populationbis = new VotreIndividu[NbIndividu / 2]; 
-      
-        this.tri(); 
+        // VotreIndividu[] Populationbis = new VotreIndividu[NbIndividu / 2];
 
-        // On trie la liste Population. (VotrePopulation.tri() ne fonctionne pas !!)
+        this.sortByScore();
+
         // Sort the individuals
-        for (int i = 0; i < NbIndividu / 8; i++) { 
-            // 25% des 50% d'individus doivent être choisis comme étant les  meilleurs, c'est-à-dire ceux ayant le meilleur score
-            Populationbis[i] = Population[i];
-            // on prend les individus ayant le meilleur score de tableau population
-        }
+        // for (int i = 0; i < NbIndividu / 8; i++) {
+        // // 25% des 50% d'individus doivent être choisis comme étant les meilleurs,
+        // c'est-à-dire ceux ayant le meilleur score
+        // Populationbis[i] = Population[i];
+        // // on prend les individus ayant le meilleur score de tableau population
+        // }
 
         // On selectionne ensuite 75% des individus restants en les prenant
         // aléatoirement dans la population initiale.
-        for (int j = NbIndividu / 8; j < Populationbis.length; j++) {
-            int NombreAleatoire = (int) (NbIndividu / 8 + Math.random() * (NbIndividu -
-            NbIndividu / 8));
-            // (retourne un entier correspondant à la positions d'individus n'étant pas ceux que nous avons sélectionnées comme étant les meilleurs dans l'étape juste avant
-            Populationbis[j] = Population[NombreAleatoire];
+        for (int j = NbIndividu / 8; j < NbIndividu; j++) {
+            int NombreAleatoire = (int) (NbIndividu / 8 + Math.random() * (NbIndividu - NbIndividu / 8));
+            // (retourne un entier correspondant à la positions d'individus n'étant pas ceux
+            // que nous avons sélectionnées comme étant les meilleurs dans l'étape juste
+            // avant
+            Population[j] = Population[NombreAleatoire];
 
         }
         // On retourne la nouvelle population Populationbis, après la sélection
         // effectuée sur l'ancienne population Population
-        return Populationbis;
+        // return Populationbis;
     }
 
     // METHODE CROISEMENT (2EME ETAPE)
     /**
      * 
      * 
-     * @return 
+     * @return
      */
-    public VotreIndividu[] Croisement() {
-        // Méthode permettant de réaliser des croisement sur la Populationbis, pour  obtenir une nouvelle génération d'individus contenant Populationbis et leur ddance provenant de croisements
-        VotreIndividu[] Populationterce = new VotreIndividu[NbIndividu];
-        VotreIndividu[] Populationbis = this.Selection();
-        // On commence par ajouter tous les individus issus de la sélection dans la liste d'individus Populationterce
-        
-        for (int i = 0; i < Populationbis.length; i++) {
-            Populationterce[i] = Populationbis[i];
-        }
-        // Ensuite, on va réaliser des croisements entre deux individus au hasard parmi les individus de Populationbis
-        for (int j = NbIndividu / 2; j < NbIndividu; j++) {
-            // On va compléter Populationterce en y ajoutant des individus issus de croisements
-            int ChoixPere = (int) (Math.random() * Populationbis.length);
-            // On choisit un indice correspondant à la postition du Père dans Populationbis
-            int ChoixMere = (int) (Math.random() * Populationbis.length);
-            // On choisit un indice correspondant à la position de la Mère dans Populationbis. On s'assure que ChoixMere et ChoixPere ne prennent pas la même valeur, sinon on prend comme mère l'individu situé juste avant ou juste après dans Populationbis
-            if (ChoixPere != ChoixMere) {
-                ChoixPere = ChoixPere;
-                ChoixMere = ChoixMere;
+    public VotreIndividu[] crossing() {
+        // Méthode permettant de réaliser des croisement sur la Populationbis, pour
+        // obtenir une nouvelle génération d'individus contenant Populationbis et leur
+        // ddance provenant de croisements
+        // VotreIndividu[] Populationterce = new VotreIndividu[NbIndividu];
+        // VotreIndividu[] Populationbis = this.Selection();
+        this.selection();
+        // On commence par ajouter tous les individus issus de la sélection dans la
+        // liste d'individus Populationterce
 
-            } else {
-                if (ChoixPere < Populationbis.length - 1) {
+        // for (int i = 0; i < Populationbis.length; i++) {
+        //     Populationterce[i] = Populationbis[i];
+        // }
+        // Ensuite, on va réaliser des croisements entre deux individus au hasard parmi
+        // les individus de Populationbis
+        for (int j = NbIndividu / 2; j < NbIndividu; j++) {
+            // On va compléter Populationterce en y ajoutant des individus issus de
+            // croisements
+            int ChoixPere = (int) (Math.random() * NbIndividu), 
+                ChoixMere = (int) (Math.random() * NbIndividu);
+            // On choisit un indice correspondant à la postition du Père dans Populationbis
+
+            // On choisit un indice correspondant à la position de la Mère dans
+            // Populationbis. On s'assure que ChoixMere et ChoixPere ne prennent pas la même
+            // valeur, sinon on prend comme mère l'individu situé juste avant ou juste après
+            // dans Populationbis
+            if (ChoixPere == ChoixMere) {
+                if (ChoixPere < NbIndividu - 1) {
                     ChoixMere += 1;
                 } else {
                     ChoixMere -= 1;
@@ -179,12 +187,15 @@ public class VotrePopulation implements Population {
             // Pour cela, on va creer un individu pour lequel on va affecter son génome avec
             // la méthode setGenome() et modifier chacun de ses gènes en le remplaçant soit
             // par celui de son père, soit par celui de sa mère
-            VotreIndividu Enfant = new VotreIndividu(lab); 
-            // On créer un enfant grâce au constructeur par défaut. Son génome sera donc quelconque et on va le modifier par la suite
+            VotreIndividu Enfant = new VotreIndividu(lab);
+            // On créer un enfant grâce au constructeur par défaut. Son génome sera donc
+            // quelconque et on va le modifier par la suite
             int[] nouveaugenome = Enfant.getGenome();
-            // On créer une liste nouveaugenome qui correspond au genome créer par le constructeur. On va ensuite le modifier pour obtenir un génome issue de celui du père et de la mère de l'enfant
+            // On créer une liste nouveaugenome qui correspond au genome créer par le
+            // constructeur. On va ensuite le modifier pour obtenir un génome issue de celui
+            // du père et de la mère de l'enfant
             // Création du génome de l'enfant
-            for (int k = 0; k < nouveaugenome.length; k++) {
+            for (int k = 0; k < NbIndividu; k++) {
                 // On choisit si le gène numéro k provient du père ou de la mère
                 double ChoixPereouMere = Math.random();
                 if (ChoixPereouMere < 0.5) {
@@ -198,7 +209,8 @@ public class VotrePopulation implements Population {
             }
             Enfant.setGenome(nouveaugenome);
             Populationterce[j] = Enfant;
-            // On place l'enfant issue du Pere et de la Mere dans la liste des individus Populationterce
+            // On place l'enfant issue du Pere et de la Mere dans la liste des individus
+            // Populationterce
 
         }
         // On retourne la liste des individus constituants la nouvelle population (suite
@@ -213,11 +225,15 @@ public class VotrePopulation implements Population {
 
     // METHODE MUTATION (DERNIÈRE ETAPE)
     public void Mutation() {
-        // Méthode permettant de réaliser des mutations sur 1% des invidividus provenant de la nouvelle population
-        VotreIndividu[] Populationquat = this.Croisement(); 
-        // On commence par récuperer la population issues de la sélection et du croisement, pour pouvoir ensuite faire muter 1% de ses individus
+        // Méthode permettant de réaliser des mutations sur 1% des invidividus provenant
+        // de la nouvelle population
+        VotreIndividu[] Populationquat = this.Croisement();
+        // On commence par récuperer la population issues de la sélection et du
+        // croisement, pour pouvoir ensuite faire muter 1% de ses individus
         // Nous allons parcourir les gènes de chacun des individus de la population
-        // Populationquat. Pour chaque gène on tire au sort un nombre entre 0 et 1. Si sa valeur est inférieure au seuil de probabilité de mutation (1%), on change la valeur de ce gène.
+        // Populationquat. Pour chaque gène on tire au sort un nombre entre 0 et 1. Si
+        // sa valeur est inférieure au seuil de probabilité de mutation (1%), on change
+        // la valeur de ce gène.
 
         for (int i = 0; i < Populationquat.length; i++) {
             int[] genome = Population[i].getGenome();
@@ -256,7 +272,6 @@ public class VotrePopulation implements Population {
         Population = Populationquat;
         // return Populationquat;
     }
-
 
     /**
      * Print every individuals score of the population

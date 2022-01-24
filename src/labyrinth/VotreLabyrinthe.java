@@ -333,7 +333,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         for (int k = 0; k < ngen; k++) {
             population.Mutation();
         }
-        population.getClass();
         population.get(0).printGenome();
         System.out.println("Mutation finished");
 
