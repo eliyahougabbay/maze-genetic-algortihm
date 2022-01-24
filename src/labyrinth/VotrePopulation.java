@@ -143,17 +143,21 @@ public class VotrePopulation implements Population {
 
     // METHODE CROISEMENT (2EME ETAPE)
     /**
+     * <p>Crossing the second half of the genome with two other genome.</p>
      * 
+     * <p>Select a mother and a father among the population</p> 
      * 
      * @return
      */
-    public VotreIndividu[] crossing() {
+    public void crossing() {
         // Méthode permettant de réaliser des croisement sur la Populationbis, pour
         // obtenir une nouvelle génération d'individus contenant Populationbis et leur
         // ddance provenant de croisements
         // VotreIndividu[] Populationterce = new VotreIndividu[NbIndividu];
         // VotreIndividu[] Populationbis = this.Selection();
-        this.selection();
+        // ---------------
+        // this.selection();
+        // ---------------
         // On commence par ajouter tous les individus issus de la sélection dans la
         // liste d'individus Populationterce
 
@@ -190,7 +194,9 @@ public class VotrePopulation implements Population {
             VotreIndividu Enfant = new VotreIndividu(lab);
             // On créer un enfant grâce au constructeur par défaut. Son génome sera donc
             // quelconque et on va le modifier par la suite
-            int[] nouveaugenome = Enfant.getGenome();
+            // -----------------
+            // int[] nouveaugenome = Enfant.getGenome();
+            // -----------------
             // On créer une liste nouveaugenome qui correspond au genome créer par le
             // constructeur. On va ensuite le modifier pour obtenir un génome issue de celui
             // du père et de la mère de l'enfant
@@ -199,24 +205,23 @@ public class VotrePopulation implements Population {
                 // On choisit si le gène numéro k provient du père ou de la mère
                 double ChoixPereouMere = Math.random();
                 if (ChoixPereouMere < 0.5) {
-                    nouveaugenome[k] = Populationbis[ChoixPere].getGenome()[k];
+                    Enfant.getGenome()[k] = Population[ChoixPere].getGenome()[k];
                     // Si ChoixPereouMere est dans [0,0.5[, le gène k proviendra du père
-
                 } else {
-                    nouveaugenome[k] = Populationbis[ChoixMere].getGenome()[k];// Sinon, le gène k proviendra de la mère
+                    Enfant.getGenome()[k] = Population[ChoixMere].getGenome()[k];// Sinon, le gène k proviendra de la mère
                 }
 
             }
-            Enfant.setGenome(nouveaugenome);
-            Populationterce[j] = Enfant;
+            Population[j].setGenome(Enfant.getGenome());
+            // Populationterce[j] = Enfant;
             // On place l'enfant issue du Pere et de la Mere dans la liste des individus
             // Populationterce
 
         }
         // On retourne la liste des individus constituants la nouvelle population (suite
         // à la sélection et au croisement)
-        Population = Populationterce;
-        return Populationterce;
+        // Population = Populationterce;
+        // return Populationterce;
     }
 
     /*
@@ -224,10 +229,16 @@ public class VotrePopulation implements Population {
      */
 
     // METHODE MUTATION (DERNIÈRE ETAPE)
+
+    /**
+     * Select a small pourcentage of the population 
+     */
     public void Mutation() {
         // Méthode permettant de réaliser des mutations sur 1% des invidividus provenant
         // de la nouvelle population
-        VotreIndividu[] Populationquat = this.Croisement();
+        // ----------
+        // VotreIndividu[] Populationquat = this.Croisement();
+        // ----------
         // On commence par récuperer la population issues de la sélection et du
         // croisement, pour pouvoir ensuite faire muter 1% de ses individus
         // Nous allons parcourir les gènes de chacun des individus de la population
@@ -235,16 +246,13 @@ public class VotrePopulation implements Population {
         // sa valeur est inférieure au seuil de probabilité de mutation (1%), on change
         // la valeur de ce gène.
 
-        for (int i = 0; i < Populationquat.length; i++) {
-            int[] genome = Population[i].getGenome();
+        for (int i = 0; i < NbIndividu; i++) {
+
+            // int[] genome = Population[i].getGenome();
             // On obtient le génome de l'individu i
-            for (int j = 0; j < genome.length; j++) {
-                double TireAuSort = Math.random();
+            for (int j = 0; j < NbIndividu; j++) {
                 // On tire au sort un nombre dans [0;1[
-                if (TireAuSort > 0.01) {
-                    genome[j] = genome[j];// Si ce nombre est plus grand que 1%, on ne modifie pas le gène j de
-                                          // l'individu i
-                } else {
+                if (Math.random() < 0.01) {
                     // Si ce nombre est plus petit ou égal à 1%, on modifie le gène j de l'individu
                     // i
                     // Pour cela, on va tirer un nombre au hasard valant 0,1,2 ou 3.
@@ -252,29 +260,19 @@ public class VotrePopulation implements Population {
                     // Si on tombe sur 1, le gène j prendra la valeur 2 qui correspond à l'Est
                     // Si on tombe sur 2, le gène j prendra la valeur 4 qui correspond au Sud
                     // Si on tombe sur 3, le gène j prendra la valeur 8 qui correspond à l'Ouest
-                    int Alea = (int) (Math.random() * 4);// Alea peut valoir 0,1,2 ou 3
-                    if (Alea == 0) {
-                        genome[j] = 1;
-                    }
-                    if (Alea == 1) {
-                        genome[j] = 2;
-                    }
-                    if (Alea == 2) {
-                        genome[j] = 4;
-                    }
-                    if (Alea == 3) {
-                        genome[j] = 8;
-                    }
+                    // Random number in {0, 1, 2, 3} to select the orientation
+                    int rnd = (int) (Math.random() * 4);
+                    Population[i].getGenome()[j] = (int) Math.pow(2, rnd);
+                    
                 }
             }
 
         }
-        Population = Populationquat;
-        // return Populationquat;
     }
 
     /**
      * Print every individuals score of the population
+     
      */
     public void AfficherScore() {
         double max = 0;
