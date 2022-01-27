@@ -30,7 +30,12 @@ public interface Individu {
     /**
      * Print genome
      */
-    public void printGenome();
+    public void printGenome(int k, int ngen);
+
+    /**
+     * Print genome to logs
+     */
+    public void printGenomeToLogs();
 
     /**
      * Affecte un nouveau genome à l'individu.

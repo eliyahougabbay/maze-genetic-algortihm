@@ -6,6 +6,7 @@ package labyrinth;
 public class VotreIndividu implements Individu {
 
     public static final double ALPHA = 0.5;
+    public static int instances = 0;
 
     private int[] genome;
     private double[][] scoreGenome;
@@ -14,8 +15,6 @@ public class VotreIndividu implements Individu {
     private int nbl, nbc;
     private int il, ic;
 
-    
-
     /**
      * Generates a random sequence of the individual and associates a random
      * sequence
@@ -23,6 +22,8 @@ public class VotreIndividu implements Individu {
      * @param lab the labyrinth
      */
     public VotreIndividu(VotreLabyrinthe lab) {
+
+        instances++;
 
         this.lab = lab;
         nbl = lab.getNbLignes();
@@ -34,7 +35,6 @@ public class VotreIndividu implements Individu {
             this.genome[i] = possibleOrientations[(int) (Math.random() * possibleOrientations.length)];
         }
     }
-
 
     /**
      * Get score of x & y coordinates square
@@ -49,7 +49,6 @@ public class VotreIndividu implements Individu {
         return score;
     }
 
-
     /**
      * Get distance between last path square and labyrinth exit.
      * 
@@ -61,11 +60,12 @@ public class VotreIndividu implements Individu {
         return (Math.sqrt(Math.pow(lab.getArrivee() - i, 2) + Math.pow(nbc - 1 - j, 2)));
     }
 
-
     /**
-     * For every gene of the genome, check if the gene crosses a wall. If so, set the limit to the last valid square.
+     * For every gene of the genome, check if the gene crosses a wall. If so, set
+     * the limit to the last valid square.
      * 
-     * @return vector of { limit's row index, limit's column index, last valid square index in the genome }
+     * @return vector of { limit's row index, limit's column index, last valid
+     *         square index in the genome }
      */
     public int[] InfoGenome() {
 
@@ -115,8 +115,7 @@ public class VotreIndividu implements Individu {
         return (new int[] { il, ic, k });
     }
 
-
-   /**
+    /**
      * Limits indexes
      * 
      * @return indexes
@@ -125,11 +124,12 @@ public class VotreIndividu implements Individu {
         return new int[] { il, ic };
     }
 
-    
     /**
      * Print sequence genome
      */
-    public void printGenome() {
+    public void printGenome(int rank, int ngen) {
+        System.out.println(String.format("[GENE INFO] Rank %d / Generation %d\n", rank, ngen));
+        System.out.print("[GENE START] - ");
         for (int gene : genome) {
             switch (gene) {
                 case 1:
@@ -138,16 +138,43 @@ public class VotreIndividu implements Individu {
                 case 2:
                     System.out.print("Est ");
                     break;
-                case 3:
+                case 4:
                     System.out.print("South ");
                     break;
-                case 4:
-                    System.out.print("west ");
+                case 8:
+                    System.out.print("West ");
                     break;
             }
         }
+        System.out.println("[GENE END]\n");
     }
 
+
+    /**
+     * Print geneome sequence to logs
+     */
+    public void printGenomeToLogs() {
+        String log = "[GENE START]\n";
+        for (int gene : genome) {
+            switch (gene) {
+                case 1:
+                    log += "North ";
+                    break;
+                case 2:
+                    log += "Est ";
+                    break;
+                case 4:
+                    log += "South ";
+                    break;
+                case 8:
+                    log += "West ";
+                    break;
+            }
+        }
+        log += "\n[GENE END]";
+        Fenetre.logs.setText(log);
+
+    }
 
     @Override
     public int[] getGenome() {

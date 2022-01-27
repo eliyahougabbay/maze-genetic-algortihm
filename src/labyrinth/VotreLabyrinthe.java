@@ -22,18 +22,17 @@ public class VotreLabyrinthe implements Labyrinthe {
     private Fenetre fen;
     private VotrePopulation population;
 
-    
     /**
      * Constructor of the labyrinth.
      * Each square case has its 4 walls: North = 1, Est = 2, South = 4 & West = 8
      * whose sum is 15 = 1 + 2 + 4 + 8
      * 
      */
-    public VotreLabyrinthe(){}
-
+    public VotreLabyrinthe() {
+    }
 
     /**
-     * Initialize both labyrinth and path values 
+     * Initialize both labyrinth and path values
      * 
      * @param nl row number
      * @param nc column number
@@ -74,7 +73,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         }
     }
 
-
     /**
      * Find all neighbors where the path may continue
      * 
@@ -113,7 +111,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         return CoordonnesPossibles;
     }
 
-    
     /**
      * Select neighbors squares path which are unvisited and inside the labyrinthe,
      * randomly select one and generate a path from the current path square
@@ -154,7 +151,8 @@ public class VotreLabyrinthe implements Labyrinthe {
         }
 
         // If North square neighbor is selected, a crossing is created
-        // by breaking the North wall of current square and the South Wall of neighbor square
+        // by breaking the North wall of current square and the South Wall of neighbor
+        // square
         if (TabPuce.get(l) == 0) {
             // Break North wall of current path square
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 1;
@@ -203,7 +201,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         return Coord;
     }
 
-
     /**
      * Randomly generate start and end row coordinates
      * 
@@ -213,7 +210,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         int[] ESRowCoordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
         return ESRowCoordinates;
     }
-
 
     /**
      * Randomly select a neighbor if all neighbors are unavailable.
@@ -244,10 +240,8 @@ public class VotreLabyrinthe implements Labyrinthe {
         return neighborCoordinates;
     }
 
-
     @Override
     public void generer(int nl, int nc) {
-
 
         initLabyrinthValues(nl, nc);
 
@@ -328,13 +322,39 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     @Override
     public void evoluer(int npop, int ngen) {
-        System.out.println("Mutation launched");
+        System.out.println("Mutation launched...\n");
         population = new VotrePopulation(npop, this);
         for (int k = 0; k < ngen; k++) {
-            population.Mutation();
+            population.selection();
+            population.crossing();
+            population.mutation();
+
+            fen.afficher(population);
+
+            switch (k) {
+                case 100:
+                    population.get(0).printGenome(0, 100);
+                    fen.afficher(population.get(0));
+                    break;
+                case 500:
+                    population.get(0).printGenome(0, 500);
+                    fen.afficher(population.get(0));
+                    break;
+                case 1000:
+                    population.get(0).printGenome(0, 1000);
+                    fen.afficher(population.get(0));
+                    break;
+                case 5000:
+                    population.get(0).printGenome(0, 5000);
+                    fen.afficher(population.get(0));
+                    break;
+            }
         }
-        population.get(0).printGenome();
-        System.out.println("Mutation finished");
+
+        population.get(0).printGenome(0, ngen);
+        population.get(1).printGenome(1, ngen);
+        population.get(2).printGenome(2, ngen);
+        System.out.println("\nMutation finished.\n");
 
     }
 }
