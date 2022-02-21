@@ -50,4 +50,4 @@ After resolution, each individual share the same DNA sequence (the path to the e
   <img src="screenshots\solved_scores.png" />
 </p>
 
-> The euclidean norm should be equal to 0, however the sequence path stop one square further the labyrinth finish.
+> The euclidean norm should be equal to 0, however the sequence path stop one square further the labyrinth end.
