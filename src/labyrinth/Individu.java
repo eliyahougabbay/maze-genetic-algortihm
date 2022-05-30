@@ -28,6 +28,16 @@ public interface Individu {
     public int[] getGenome();
 
     /**
+     * Print genome
+     */
+    public void printGenome(int k, int ngen);
+
+    /**
+     * Print genome to logs
+     */
+    public void printGenomeToLogs();
+
+    /**
      * Affecte un nouveau genome à l'individu.
      *
      * @param genome le nouveau genome.
@@ -40,6 +50,7 @@ public interface Individu {
      * @return l'indice du premier gene correspondant à une case non valide.
      */
     public int getLimite();
+    
     /**
      * Affecte la valeur limite.
      * @param lim l'indice dans le génome du premier gene non valide.

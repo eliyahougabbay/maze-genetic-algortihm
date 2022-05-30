@@ -15,27 +15,40 @@ public class Main {
 
     public static void main(String[] args) {
     
-
-        /*
-         * TEST VotreLabyrinthe Ces instructions suivantes permettent d'afficher un
-         * labyritnhe de taille 10x10
-         */
-        
         /**
          * Creer le Labyrinthe
          */
-        Fenetre fen = new Fenetre();
-        VotreLabyrinthe parcours = new VotreLabyrinthe(10, 10);
-        fen.setLabyrinthe(parcours);
+        try {
+            Fenetre fen = new Fenetre();
+            VotreLabyrinthe parcours = new VotreLabyrinthe();
+            fen.setLabyrinthe(parcours);
 
+            parcours.evoluer(25, 1000);
+
+        } catch (Exception e) {
+            e.getCause();
+        }
+
+        // VotrePopulation pop = new VotrePopulation(25, parcours);
+        
+        // // for (int k = 0; k < 10000; k++) {
+        // //         pop.Mutation();
+        // //     }
+        // // pop.AfficherScore();
+        
+        // System.out.println(pop.getSize());
+        // System.out.println(pop.get(0));
+
+        
        
 
         // // TEST VotreIndividu
-        // int nl = 5, nc = 5;
+        // int nl = 12, nc = 12;
         // /*
         //  * Creer un labyrinthe de taille nl x nc puis créer une population de genome la
         //  * taille du labyrinthe
         //  */
+
         // VotreLabyrinthe lab = new VotreLabyrinthe(nl, nc);
         // VotrePopulation pop = new VotrePopulation(25, lab);
         // /* Affiche la populaton en code Nord, Est, Sud, Ouest */
@@ -53,9 +66,9 @@ public class Main {
         // // pop.Afficher();
         // pop.AfficherScore();
 
-        // /*
-        //  * //pop.tri(); //pop.Afficher();
-        //  */
+        /*
+         * //pop.tri(); //pop.Afficher();
+         */
 
     }
 

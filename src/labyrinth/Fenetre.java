@@ -51,6 +51,11 @@ public class Fenetre extends JFrame implements ActionListener {
      */
     private Labyrinthe lab;
 
+    /**
+     * logs
+     */
+    public static JTextArea logs;
+
     public Fenetre() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,7 +84,7 @@ public class Fenetre extends JFrame implements ActionListener {
 
         // Declaration du contenu de la fenetre
         Container contenu = getContentPane();
-        contenu.setLayout(new BorderLayout(5, 5));
+        contenu.setLayout(new BorderLayout());
 
         /**
          * Left Panel
@@ -165,12 +170,12 @@ public class Fenetre extends JFrame implements ActionListener {
         logsPanel.setBackground(Color.LIGHT_GRAY);
         contenu.add(logsPanel, BorderLayout.PAGE_END);
 
-        JTextArea logs = new JTextArea();
-        logs.setEditable(false);
-        logs.setBackground(Color.LIGHT_GRAY);
+        Fenetre.logs = new JTextArea();
+        Fenetre.logs.setEditable(false);
+        Fenetre.logs.setBackground(Color.LIGHT_GRAY);
         String logString = "> Labyrinth initialized";
-        logs.setText(logString); 
-        logsPanel.add(logs);
+        Fenetre.logs.setText(logString); 
+        logsPanel.add(Fenetre.logs);
 
         pack();
         setVisible(true);
@@ -233,8 +238,6 @@ public class Fenetre extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Nouveau":
-                System.out.println(e);
-                System.out.println("clicked!");
                 int nl = Integer.parseInt(tLignes.getText());
                 int nc = Integer.parseInt(tCols.getText());
                 if (canvas.setDim(nl, nc)) {

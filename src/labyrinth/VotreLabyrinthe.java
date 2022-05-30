@@ -2,10 +2,12 @@ package labyrinth;
 
 import static labyrinth.Labyrinthe.ORIENTATION;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * A Class to randomly generate a {@link Labyrinthe}.
+ * A class to generate a {@link Labyrinthe}.
  * 
  * @author GABBAY
  */
@@ -25,33 +27,37 @@ public class VotreLabyrinthe implements Labyrinthe {
      * Each square case has its 4 walls: North = 1, Est = 2, South = 4 & West = 8
      * whose sum is 15 = 1 + 2 + 4 + 8
      * 
+     */
+    public VotreLabyrinthe() {
+    }
+
+    /**
+     * Initialize both labyrinth and path values
      * 
      * @param nl row number
      * @param nc column number
      */
-    public VotreLabyrinthe(int nl, int nc) {
+    public void initLabyrinthValues(int nl, int nc) {
 
         this.nbLigne = nl;
         this.nbColonne = nc;
         this.labyrinthe = new int[nl][nc];
         this.chemin = new int[nl][nc];
 
-        for (int i = 0; i < nl; i++) {
-            for (int j = 0; j < nc; j++) {
+        for (int i = 0; i < nbLigne; i++) {
+            for (int j = 0; j < nbColonne; j++) {
                 // each case sum is 15 = (North) 1 + (Est) 2 + (South) 4 + (West) 8
                 labyrinthe[i][j] = 15;
                 //
                 chemin[i][j] = 0;
             }
         }
-
     }
-
 
     /**
      * Print each labyrinthe square value & path value
      */
-    public void afficherLab() {
+    public void printLab() {
         for (int i = 0; i < labyrinthe.length; i++) {
             for (int j = 0; j < labyrinthe[0].length; j++) {
                 System.out.print(labyrinthe[i][j] + " ");
@@ -66,7 +72,6 @@ public class VotreLabyrinthe implements Labyrinthe {
             System.out.println();
         }
     }
-
 
     /**
      * Find all neighbors where the path may continue
@@ -106,7 +111,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         return CoordonnesPossibles;
     }
 
-    
     /**
      * Select neighbors squares path which are unvisited and inside the labyrinthe,
      * randomly select one and generate a path from the current path square
@@ -147,7 +151,8 @@ public class VotreLabyrinthe implements Labyrinthe {
         }
 
         // If North square neighbor is selected, a crossing is created
-        // by breaking the North wall of current square and the South Wall of neighbor square
+        // by breaking the North wall of current square and the South Wall of neighbor
+        // square
         if (TabPuce.get(l) == 0) {
             // Break North wall of current path square
             labyrinthe[Tab[4][0]][Tab[4][1]] -= 1;
@@ -196,7 +201,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         return Coord;
     }
 
-
     /**
      * Randomly generate start and end row coordinates
      * 
@@ -206,7 +210,6 @@ public class VotreLabyrinthe implements Labyrinthe {
         int[] ESRowCoordinates = { (int) (Math.random() * nbLigne), (int) (Math.random() * nbLigne) };
         return ESRowCoordinates;
     }
-
 
     /**
      * Randomly select a neighbor if all neighbors are unavailable.
@@ -237,9 +240,10 @@ public class VotreLabyrinthe implements Labyrinthe {
         return neighborCoordinates;
     }
 
-
     @Override
     public void generer(int nl, int nc) {
+
+        initLabyrinthValues(nl, nc);
 
         // Randomly select the square coordinates to start generating the labyritnh
         int l = (int) (Math.random() * nbLigne);
@@ -318,10 +322,39 @@ public class VotreLabyrinthe implements Labyrinthe {
 
     @Override
     public void evoluer(int npop, int ngen) {
+        System.out.println("Mutation launched...\n");
         population = new VotrePopulation(npop, this);
         for (int k = 0; k < ngen; k++) {
-            population.Mutation();
+            population.selection();
+            population.crossing();
+            population.mutation();
+
+            fen.afficher(population);
+
+            switch (k) {
+                case 100:
+                    population.get(0).printGenome(0, 100);
+                    fen.afficher(population.get(0));
+                    break;
+                case 500:
+                    population.get(0).printGenome(0, 500);
+                    fen.afficher(population.get(0));
+                    break;
+                case 1000:
+                    population.get(0).printGenome(0, 1000);
+                    fen.afficher(population.get(0));
+                    break;
+                case 5000:
+                    population.get(0).printGenome(0, 5000);
+                    fen.afficher(population.get(0));
+                    break;
+            }
         }
-        // population = new VotrePopulation();
+
+        population.get(0).printGenome(0, ngen);
+        population.get(1).printGenome(1, ngen);
+        population.get(2).printGenome(2, ngen);
+        System.out.println("\nMutation finished.\n");
+
     }
 }
