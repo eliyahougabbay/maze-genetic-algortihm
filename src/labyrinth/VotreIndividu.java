@@ -1,17 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package labyrinth;
 
-//import static labyrinthe.VotreIndividu.ALPHA;
-
 /**
- *
  * @author GABBAY
  */
 public class VotreIndividu implements Individu {
+
+    public static final double ALPHA = 0.5;
+    public static int instances = 0;
 
     private int[] genome;
     private double[][] scoreGenome;
@@ -20,99 +15,63 @@ public class VotreIndividu implements Individu {
     private int nbl, nbc;
     private int il, ic;
 
-    public static final double ALPHA = 0.5;
-
-    // AFFICHER LE GENOME D'UN INDIVIDU
-    public void afficher() {
-        for (int i = 0; i < nbl * nbc; i++) {
-            System.out.print(" ");
-            this.afficherOrien(i);
-        }
-        System.out.println();
-    }
-
-    // AFFICHER L'ORIENTATION D'UN GÈNE DU GÉNOME
-    public void afficherOrien(int k) {
-        if (genome[k] == 1)
-            System.out.print("Nord");
-        if (genome[k] == 2)
-            System.out.print("Est");
-        if (genome[k] == 4)
-            System.out.print("Sud");
-        if (genome[k] == 8)
-            System.out.print("Ouest");
-    }
-
-    // RETOURNE LES INDICES DE LA LIMITE
-    public int[] retourIndice() {
-        return new int[] { il, ic };
-    }
-
-    // CONSTRUCTEUR : CREATION D'UN INDIVIDU QUI CORRESPOND À UN GENOME
+    /**
+     * Generates a random sequence of the individual and associates a random
+     * sequence
+     * 
+     * @param lab the labyrinth
+     */
     public VotreIndividu(VotreLabyrinthe lab) {
+
+        instances++;
+
         this.lab = lab;
         nbl = lab.getNbLignes();
         nbc = lab.getNbCols();
-        // creation du genome : On choisit l'orientation
-        int[] valPossible = { 1, 2, 4, 8 };
-        genome = new int[nbl * nbc];
-        // On créer un génome composer aléatoirement des entiers du tableau valPossible
+
+        int[] possibleOrientations = { 1, 2, 4, 8 };
+        this.genome = new int[nbl * nbc];
         for (int i = 0; i < nbl * nbc; i++) {
-            genome[i] = valPossible[(int) (Math.random() * valPossible.length)];
+            this.genome[i] = possibleOrientations[(int) (Math.random() * possibleOrientations.length)];
         }
     }
 
-    // RETOURNE LA DISTANCE À LA CELLULE DE SORTIE DE LA DERNIERE CELLULE DE CHEMIN
-    // VALIDE
+    /**
+     * Get score of x & y coordinates square
+     * 
+     * @param i row number
+     * @param j column number
+     * @return score
+     */
+    public double getScore(int i, int j) {
+        double score = (1 - ALPHA) * this.getDistance(i, j) / Math.sqrt(nbl * nbl + nbc * nbc)
+                + ALPHA * (nbl * nbc - this.getLimite()) / (nbl * nbc);
+        return score;
+    }
+
     /**
      * Get distance between last path square and labyrinth exit.
      * 
      * @param i row square number
      * @param j column square number
-     * @return euclidean distance 
+     * @return euclidean distance
      */
     public double getDistance(int i, int j) {
-        return (Math.sqrt(Math.pow((lab.getArrivee() - i), 2) + Math.pow((nbc - 1 - j), 2)));
+        return (Math.sqrt(Math.pow(lab.getArrivee() - i, 2) + Math.pow(nbc - 1 - j, 2)));
     }
 
     /**
-     * Get score of i,j coordinates square
+     * For every gene of the genome, check if the gene crosses a wall. If so, set
+     * the limit to the last valid square.
      * 
-     * @param i row number
-     * @param j column number 
-     * @return score
-     */
-    public double getScore(int i, int j) {
-        double s = (1 - ALPHA) * this.getDistance(i, j) / Math.sqrt(nbl * nbl + nbc * nbc)
-                + ALPHA * (nbl * nbc - this.getLimite()) / (nbl * nbc);
-        return s;
-    }
-
-    // ON ACQUIERT TOUTES LES INFOS NECESSAIRE AU GENOME
-    /**
-     * 
-     * @return 
+     * @return vector of { limit's row index, limit's column index, last valid
+     *         square index in the genome }
      */
     public int[] InfoGenome() {
-        // System.out.println();
-        /* On va supposer que le gene commence par l'entrée */
-        // ----- double[][] scoreGenome = new double[nbl][nbc]; ----
-        /* On veut les indices de départ (ces derniers vont évoluer): */
-        int il = lab.getDepart(), ic = 0;
-        // System.out.println("Les coordonnées de départ sont : "+ il+", "+ic);
-        /*
-         * On prend le genome et on regarde : - quels sont les endroits où il n'y a pas
-         * de mur - si la direction prise par le génome est bonne - si oui : on passe à
-         * la case suivante et on réitère le processus - si non : on calcul le score du
-         * génome
-         */
-        /*
-         * On regarde tous les genes : on regarde la cellule et on compare avec le gene
-         */
-        int i = 0;
-        int k = 0;
-        // boolean b=false;
 
+        int il = lab.getDepart(), ic = 0;
+
+        int i = 0, k = 0;
         while (i < nbl * nbc) {
 
             k++;
@@ -134,10 +93,7 @@ public class VotreIndividu implements Individu {
             if (m >= 1) {
                 walls[0] = true;
             }
-            /*
-             * Après avoir regarde tous les murs disponibles on test si le genome ne saute
-             * pas un mur : si non, on passe aux coordonnées suivantes
-             */
+            // Checks existing walls and if path doesn't get through one
             if (genome[i] == 1 && walls[0] && il >= 1) {
                 il -= 1;
             } else if (genome[i] == 2 && walls[1] && ic <= 2) {
@@ -149,16 +105,76 @@ public class VotreIndividu implements Individu {
             } else {
                 i = nbl * nbc;
             }
-
             i++;
         }
-        lim = k;
+
         this.il = il;
         this.ic = ic;
-        
+        this.lim = k;
+
         return (new int[] { il, ic, k });
     }
 
+    /**
+     * Limits indexes
+     * 
+     * @return indexes
+     */
+    public int[] retourIndice() {
+        return new int[] { il, ic };
+    }
+
+    /**
+     * Print sequence genome
+     */
+    public void printGenome(int rank, int ngen) {
+        System.out.println(String.format("[GENE INFO] Rank %d / Generation %d\n", rank, ngen));
+        System.out.print("[GENE START] - ");
+        for (int gene : genome) {
+            switch (gene) {
+                case 1:
+                    System.out.print("North ");
+                    break;
+                case 2:
+                    System.out.print("Est ");
+                    break;
+                case 4:
+                    System.out.print("South ");
+                    break;
+                case 8:
+                    System.out.print("West ");
+                    break;
+            }
+        }
+        System.out.println("[GENE END]\n");
+    }
+
+
+    /**
+     * Print geneome sequence to logs
+     */
+    public void printGenomeToLogs() {
+        String log = "[GENE START]\n";
+        for (int gene : genome) {
+            switch (gene) {
+                case 1:
+                    log += "North ";
+                    break;
+                case 2:
+                    log += "Est ";
+                    break;
+                case 4:
+                    log += "South ";
+                    break;
+                case 8:
+                    log += "West ";
+                    break;
+            }
+        }
+        log += "\n[GENE END]";
+        Fenetre.logs.setText(log);
+
+    }
 
     @Override
     public int[] getGenome() {

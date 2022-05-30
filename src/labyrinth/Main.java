@@ -15,19 +15,31 @@ public class Main {
 
     public static void main(String[] args) {
     
-
-        /*
-         * TEST VotreLabyrinthe Ces instructions suivantes permettent d'afficher un
-         * labyritnhe de taille 10x10
-         */
-        
         /**
          * Creer le Labyrinthe
          */
-        Fenetre fen = new Fenetre();
-        VotreLabyrinthe parcours = new VotreLabyrinthe(15, 15);
-        fen.setLabyrinthe(parcours);
+        try {
+            Fenetre fen = new Fenetre();
+            VotreLabyrinthe parcours = new VotreLabyrinthe();
+            fen.setLabyrinthe(parcours);
 
+            parcours.evoluer(25, 1000);
+
+        } catch (Exception e) {
+            e.getCause();
+        }
+
+        // VotrePopulation pop = new VotrePopulation(25, parcours);
+        
+        // // for (int k = 0; k < 10000; k++) {
+        // //         pop.Mutation();
+        // //     }
+        // // pop.AfficherScore();
+        
+        // System.out.println(pop.getSize());
+        // System.out.println(pop.get(0));
+
+        
        
 
         // // TEST VotreIndividu
